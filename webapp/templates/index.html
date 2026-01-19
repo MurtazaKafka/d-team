@@ -1,0 +1,2192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D-Team Formation | DCI</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           Design System - Vintage Minimalist
+           ============================================ */
+        :root {
+            /* Color Palette */
+            --dark-coffee: #352208;
+            --soft-fawn: #e1bb80;
+            --olive-wood: #7b6b43;
+            --olive-bark: #685634;
+            --olive-wood-2: #806443;
+            
+            /* Extended Palette */
+            --cream: #f7f3eb;
+            --warm-white: #fdfcf9;
+            --light-fawn: #f0dfc4;
+            --muted-gold: #c9a86c;
+            --deep-bark: #4a3d24;
+            
+            /* Semantic Colors */
+            --text-primary: var(--dark-coffee);
+            --text-secondary: var(--olive-bark);
+            --text-muted: var(--olive-wood);
+            --bg-primary: var(--warm-white);
+            --bg-secondary: var(--cream);
+            --accent: var(--soft-fawn);
+            --accent-dark: var(--muted-gold);
+            
+            /* Typography */
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+            --space-3xl: 4rem;
+            --space-4xl: 6rem;
+            
+            /* Transitions */
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration: 0.4s;
+        }
+        
+        /* ============================================
+           Reset & Base
+           ============================================ */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        /* ============================================
+           Layout
+           ============================================ */
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl);
+        }
+        
+        /* ============================================
+           Header - Geometric Hero
+           ============================================ */
+        .hero {
+            position: relative;
+            padding: var(--space-xl) 0;
+            background: var(--dark-coffee);
+            overflow: hidden;
+        }
+        
+        /* Geometric Background Pattern */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(45deg, transparent 45%, var(--olive-bark) 45%, var(--olive-bark) 55%, transparent 55%),
+                linear-gradient(-45deg, transparent 45%, var(--olive-bark) 45%, var(--olive-bark) 55%, transparent 55%);
+            background-size: 60px 60px;
+            opacity: 0.08;
+        }
+        
+        /* Decorative Circles */
+        .hero__circle {
+            position: absolute;
+            border: 1px solid var(--soft-fawn);
+            border-radius: 50%;
+            opacity: 0.15;
+        }
+        
+        .hero__circle--1 {
+            width: 200px;
+            height: 200px;
+            top: -80px;
+            right: -50px;
+        }
+        
+        .hero__circle--2 {
+            width: 100px;
+            height: 100px;
+            bottom: -30px;
+            left: 10%;
+        }
+        
+        .hero__circle--3 {
+            width: 40px;
+            height: 40px;
+            top: 20%;
+            left: 5%;
+            background: var(--soft-fawn);
+            opacity: 0.1;
+        }
+        
+        .hero__content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        
+        .hero__title {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 400;
+            color: var(--cream);
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        
+        .hero__title span {
+            color: var(--soft-fawn);
+            font-style: italic;
+        }
+        
+        /* ============================================
+           Main Content
+           ============================================ */
+        .main {
+            flex: 1;
+            padding: var(--space-3xl) 0;
+        }
+        
+        /* ============================================
+           Upload Section
+           ============================================ */
+        .upload-section {
+            max-width: 700px;
+            margin: 0 auto var(--space-3xl);
+        }
+        
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .section-label__line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--olive-wood) 0%, transparent 100%);
+        }
+        
+        .section-label__text {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--olive-wood);
+        }
+        
+        .upload-card {
+            position: relative;
+            background: var(--warm-white);
+            border: 1px solid var(--light-fawn);
+            padding: var(--space-3xl);
+            transition: all var(--duration) var(--ease-out);
+        }
+        
+        /* Geometric corner accents */
+        .upload-card::before,
+        .upload-card::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--muted-gold);
+            transition: all var(--duration) var(--ease-out);
+        }
+        
+        .upload-card::before {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .upload-card::after {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        .upload-card:hover::before,
+        .upload-card:hover::after {
+            width: 60px;
+            height: 60px;
+        }
+        
+        .upload-zone {
+            border: 2px dashed var(--light-fawn);
+            padding: var(--space-3xl) var(--space-xl);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--duration) var(--ease-out);
+            position: relative;
+        }
+        
+        .upload-zone:hover,
+        .upload-zone.dragover {
+            border-color: var(--muted-gold);
+            background: var(--cream);
+        }
+        
+        .upload-zone__icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto var(--space-lg);
+            color: var(--olive-wood);
+            stroke-width: 1;
+        }
+        
+        .upload-zone__title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--dark-coffee);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .upload-zone__hint {
+            font-size: 0.875rem;
+            color: var(--olive-wood);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .upload-zone__btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-md) var(--space-xl);
+            background: var(--dark-coffee);
+            color: var(--cream);
+            border: none;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all var(--duration) var(--ease-out);
+        }
+        
+        .upload-zone__btn:hover {
+            background: var(--olive-bark);
+            transform: translateY(-2px);
+        }
+        
+        .upload-zone input[type="file"] {
+            display: none;
+        }
+        
+        /* Selected File Display */
+        .file-selected {
+            display: none;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--cream);
+            border: 1px solid var(--light-fawn);
+            margin-top: var(--space-lg);
+        }
+        
+        .file-selected.visible {
+            display: flex;
+        }
+        
+        .file-selected__icon {
+            width: 24px;
+            height: 24px;
+            color: var(--olive-wood);
+        }
+        
+        .file-selected__name {
+            flex: 1;
+            font-size: 0.875rem;
+            color: var(--dark-coffee);
+            font-weight: 500;
+        }
+        
+        .file-selected__remove {
+            background: none;
+            border: none;
+            color: var(--olive-wood);
+            cursor: pointer;
+            padding: var(--space-xs);
+            transition: color var(--duration);
+        }
+        
+        .file-selected__remove:hover {
+            color: var(--dark-coffee);
+        }
+        
+        /* ============================================
+           Settings Panel
+           ============================================ */
+        .settings-panel {
+            display: none;
+            margin-top: var(--space-xl);
+            padding-top: var(--space-xl);
+            border-top: 1px solid var(--light-fawn);
+        }
+        
+        .settings-panel.visible {
+            display: block;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--olive-wood);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: var(--space-md);
+            background: var(--cream);
+            border: 1px solid var(--light-fawn);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            color: var(--dark-coffee);
+            transition: all var(--duration);
+        }
+        
+        .form-group input[type="number"]:focus {
+            outline: none;
+            border-color: var(--muted-gold);
+            background: var(--warm-white);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding-top: var(--space-md);
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--dark-coffee);
+        }
+        
+        .checkbox-group label {
+            margin: 0;
+            font-size: 0.875rem;
+            text-transform: none;
+            letter-spacing: 0;
+            color: var(--text-secondary);
+        }
+        
+        /* Run Button */
+        .run-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-md);
+            padding: var(--space-lg) var(--space-xl);
+            background: var(--dark-coffee);
+            color: var(--cream);
+            border: none;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all var(--duration) var(--ease-out);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .run-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(225, 187, 128, 0.2), transparent);
+            transition: left 0.6s var(--ease-out);
+        }
+        
+        .run-btn:hover::before {
+            left: 100%;
+        }
+        
+        .run-btn:hover {
+            background: var(--olive-bark);
+        }
+        
+        .run-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .run-btn:disabled:hover::before {
+            left: -100%;
+        }
+        
+        /* ============================================
+           Results Section
+           ============================================ */
+        .results-section {
+            display: none;
+        }
+        
+        .results-section.visible {
+            display: block;
+        }
+        
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1px;
+            background: var(--light-fawn);
+            border: 1px solid var(--light-fawn);
+            margin-bottom: var(--space-3xl);
+        }
+        
+        .stat-card {
+            background: var(--warm-white);
+            padding: var(--space-xl);
+            text-align: center;
+            position: relative;
+        }
+        
+        .stat-card__value {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: var(--dark-coffee);
+            line-height: 1;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .stat-card__label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--olive-wood);
+        }
+        
+        /* Download Bar */
+        .download-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-lg) var(--space-xl);
+            background: var(--cream);
+            border: 1px solid var(--light-fawn);
+            margin-bottom: var(--space-3xl);
+        }
+        
+        .download-bar__label {
+            font-size: 0.875rem;
+            color: var(--olive-wood);
+        }
+        
+        .download-bar__actions {
+            display: flex;
+            gap: var(--space-md);
+        }
+        
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            background: transparent;
+            color: var(--dark-coffee);
+            border: 1px solid var(--dark-coffee);
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all var(--duration);
+        }
+        
+        .download-btn:hover {
+            background: var(--dark-coffee);
+            color: var(--cream);
+        }
+        
+        .download-btn--primary {
+            background: var(--dark-coffee);
+            color: var(--cream);
+        }
+        
+        .download-btn--primary:hover {
+            background: var(--olive-bark);
+            border-color: var(--olive-bark);
+        }
+        
+        /* ============================================
+           Teams Grid
+           ============================================ */
+        .teams-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-xl);
+        }
+        
+        .teams-header__title {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 400;
+            color: var(--dark-coffee);
+        }
+        
+        .view-toggle {
+            display: flex;
+            border: 1px solid var(--light-fawn);
+        }
+        
+        .view-toggle__btn {
+            padding: var(--space-sm) var(--space-lg);
+            background: transparent;
+            border: none;
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            color: var(--olive-wood);
+            cursor: pointer;
+            transition: all var(--duration);
+        }
+        
+        .view-toggle__btn:first-child {
+            border-right: 1px solid var(--light-fawn);
+        }
+        
+        .view-toggle__btn.active {
+            background: var(--dark-coffee);
+            color: var(--cream);
+        }
+        
+        /* Team Cards */
+        .teams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .team-card {
+            background: var(--warm-white);
+            border: 1px solid var(--light-fawn);
+            cursor: pointer;
+            transition: all var(--duration) var(--ease-out);
+            position: relative;
+        }
+        
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--muted-gold);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform var(--duration) var(--ease-out);
+        }
+        
+        .team-card:hover {
+            border-color: var(--muted-gold);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -20px rgba(53, 34, 8, 0.2);
+        }
+        
+        .team-card:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .team-card--warning::before {
+            background: var(--olive-wood);
+        }
+        
+        .team-card--error::before {
+            background: var(--olive-bark);
+        }
+        
+        .team-card__header {
+            padding: var(--space-lg);
+            border-bottom: 1px solid var(--light-fawn);
+        }
+        
+        .team-card__top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .team-card__name {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--dark-coffee);
+        }
+        
+        .team-card__badge {
+            padding: var(--space-xs) var(--space-sm);
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
+        .team-card__badge--virtual {
+            background: var(--cream);
+            color: var(--olive-wood);
+            border: 1px solid var(--light-fawn);
+        }
+        
+        .team-card__badge--inperson {
+            background: var(--soft-fawn);
+            color: var(--dark-coffee);
+        }
+        
+        .team-card__schedule {
+            font-size: 0.8rem;
+            color: var(--olive-wood);
+        }
+        
+        .team-card__body {
+            padding: var(--space-lg);
+        }
+        
+        .team-card__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .team-card__stat {
+            text-align: center;
+            padding: var(--space-md);
+            background: var(--cream);
+        }
+        
+        .team-card__stat-value {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--dark-coffee);
+            line-height: 1;
+        }
+        
+        .team-card__stat-label {
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--olive-wood);
+            margin-top: var(--space-xs);
+        }
+        
+        .team-card__facilitators {
+            font-size: 0.8rem;
+            color: var(--olive-wood);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--light-fawn);
+        }
+        
+        .team-card__cta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: var(--space-md);
+            background: var(--cream);
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--olive-wood);
+            border-top: 1px solid var(--light-fawn);
+            transition: all var(--duration);
+        }
+        
+        .team-card:hover .team-card__cta {
+            background: var(--soft-fawn);
+            color: var(--dark-coffee);
+        }
+        
+        /* Data Table */
+        .data-table-container {
+            display: none;
+            background: var(--warm-white);
+            border: 1px solid var(--light-fawn);
+            margin-top: var(--space-lg);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .data-table-container.visible {
+            display: block;
+        }
+        
+        .table-scroll-wrapper {
+            overflow-x: auto;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 2800px; /* Wide enough for all columns */
+        }
+        
+        .data-table--full {
+            min-width: 3200px;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: var(--space-sm) var(--space-md);
+            text-align: left;
+            border-bottom: 1px solid var(--light-fawn);
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        
+        .data-table th {
+            background: var(--dark-coffee);
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--soft-fawn);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .data-table tr:hover td {
+            background: var(--cream);
+        }
+        
+        .data-table tr:nth-child(even) td {
+            background: rgba(225, 187, 128, 0.05);
+        }
+        
+        .data-table tr:nth-child(even):hover td {
+            background: var(--cream);
+        }
+        
+        /* Sticky first column (Team ID) */
+        .th-sticky,
+        .td-sticky {
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            background: var(--warm-white);
+            border-right: 2px solid var(--light-fawn);
+        }
+        
+        .th-sticky {
+            z-index: 15;
+            background: var(--dark-coffee);
+        }
+        
+        /* Row highlighting */
+        .row-facilitator td {
+            background: rgba(225, 187, 128, 0.15) !important;
+        }
+        
+        .row-facilitator:hover td {
+            background: rgba(225, 187, 128, 0.25) !important;
+        }
+        
+        /* Cell highlighting */
+        .cell-highlight {
+            font-weight: 600;
+            color: var(--dark-coffee);
+        }
+        
+        .cell-conservative {
+            background: rgba(200, 100, 100, 0.15) !important;
+            color: #8b4444;
+            font-weight: 600;
+        }
+        
+        .cell-liberal {
+            background: rgba(100, 100, 200, 0.15) !important;
+            color: #4444a0;
+            font-weight: 600;
+        }
+        
+        .cell-credit {
+            background: rgba(100, 150, 100, 0.15) !important;
+            color: #446644;
+            font-weight: 600;
+        }
+        
+        /* ============================================
+           Friend Pairs Section
+           ============================================ */
+        .friend-pairs-section {
+            margin-top: var(--space-3xl);
+            padding-top: var(--space-3xl);
+            border-top: 1px solid var(--light-fawn);
+            display: none;
+        }
+        
+        .friend-pairs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-xl);
+        }
+        
+        .friend-pair {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--cream);
+            border: 1px solid var(--light-fawn);
+            font-size: 0.8rem;
+        }
+        
+        .friend-pair__icon {
+            width: 20px;
+            height: 20px;
+            color: var(--muted-gold);
+        }
+        
+        .friend-pair--unsatisfied {
+            background: var(--warm-white);
+        }
+        
+        .friend-pair--unsatisfied .friend-pair__icon {
+            color: var(--olive-wood);
+        }
+        
+        /* ============================================
+           Modal
+           ============================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(53, 34, 8, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--duration);
+            padding: var(--space-xl);
+        }
+        
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal {
+            background: var(--warm-white);
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow: hidden;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform var(--duration) var(--ease-out);
+        }
+        
+        .modal-overlay.visible .modal {
+            transform: translateY(0);
+        }
+        
+        /* Modal geometric accents */
+        .modal::before,
+        .modal::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 1px solid var(--muted-gold);
+            pointer-events: none;
+        }
+        
+        .modal::before {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .modal::after {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        .modal__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-xl) var(--space-2xl);
+            border-bottom: 1px solid var(--light-fawn);
+            background: var(--cream);
+        }
+        
+        .modal__title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--dark-coffee);
+        }
+        
+        .modal__subtitle {
+            font-size: 0.8rem;
+            color: var(--olive-wood);
+            margin-top: var(--space-xs);
+        }
+        
+        .modal__close {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1px solid var(--light-fawn);
+            color: var(--olive-wood);
+            cursor: pointer;
+            transition: all var(--duration);
+        }
+        
+        .modal__close:hover {
+            background: var(--dark-coffee);
+            border-color: var(--dark-coffee);
+            color: var(--cream);
+        }
+        
+        .modal__body {
+            padding: var(--space-2xl);
+            overflow-y: auto;
+            max-height: calc(90vh - 100px);
+        }
+        
+        /* Modal Info Grid */
+        .modal-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1px;
+            background: var(--light-fawn);
+            border: 1px solid var(--light-fawn);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .modal-info-item {
+            background: var(--warm-white);
+            padding: var(--space-lg);
+            text-align: center;
+        }
+        
+        .modal-info-item__value {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--dark-coffee);
+        }
+        
+        .modal-info-item__label {
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--olive-wood);
+            margin-top: var(--space-xs);
+        }
+        
+        /* Members Table */
+        .modal-section-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--dark-coffee);
+        }
+        
+        .members-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--light-fawn);
+        }
+        
+        .members-table th,
+        .members-table td {
+            padding: var(--space-md) var(--space-lg);
+            text-align: left;
+            border-bottom: 1px solid var(--light-fawn);
+            font-size: 0.8rem;
+        }
+        
+        .members-table th {
+            background: var(--cream);
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--olive-wood);
+        }
+        
+        .members-table tr:hover td {
+            background: var(--cream);
+        }
+        
+        .member-id {
+            font-family: var(--font-display);
+            font-weight: 500;
+            color: var(--dark-coffee);
+        }
+        
+        .member-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+        
+        .member-badge--facilitator {
+            background: var(--soft-fawn);
+            color: var(--dark-coffee);
+        }
+        
+        .member-badge--student {
+            background: var(--cream);
+            color: var(--olive-bark);
+            border: 1px solid var(--light-fawn);
+        }
+        
+        .member-badge--non-student {
+            background: var(--olive-wood);
+            color: var(--cream);
+        }
+        
+        .member-tag {
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 0.65rem;
+            background: var(--cream);
+            color: var(--olive-wood);
+            border: 1px solid var(--light-fawn);
+        }
+        
+        /* Wide Modal for detailed view */
+        .modal--wide {
+            max-width: 1000px;
+            width: 95%;
+        }
+        
+        /* Member Cards Grid */
+        .members-cards {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+        
+        .member-card {
+            background: var(--warm-white);
+            border: 1px solid var(--light-fawn);
+            border-radius: 0;
+            overflow: hidden;
+        }
+        
+        .member-card--facilitator {
+            border-left: 3px solid var(--soft-fawn);
+        }
+        
+        .member-card__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-md) var(--space-lg);
+            background: var(--cream);
+            border-bottom: 1px solid var(--light-fawn);
+        }
+        
+        .member-card__id {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--dark-coffee);
+        }
+        
+        .member-card__badges {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+        
+        .member-card__body {
+            padding: var(--space-lg);
+        }
+        
+        .member-card__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .member-card__section {
+            min-width: 0;
+        }
+        
+        .member-card__section-title {
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--olive-wood);
+            margin-bottom: var(--space-sm);
+            padding-bottom: var(--space-xs);
+            border-bottom: 1px solid var(--light-fawn);
+        }
+        
+        .member-card__row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: var(--space-xs) 0;
+            font-size: 0.8rem;
+        }
+        
+        .member-card__label {
+            color: var(--olive-wood);
+            font-size: 0.7rem;
+        }
+        
+        .member-card__value {
+            color: var(--dark-coffee);
+            font-weight: 500;
+            text-align: right;
+        }
+        
+        .member-card__value--highlight {
+            color: var(--olive-bark);
+            background: var(--soft-fawn);
+            padding: 2px 8px;
+        }
+        
+        .member-card__value--credit {
+            color: var(--dark-coffee);
+            background: rgba(123, 107, 67, 0.15);
+            padding: 2px 8px;
+            font-weight: 600;
+        }
+        
+        .member-card__tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            margin-top: var(--space-xs);
+        }
+        
+        .member-tag--small {
+            font-size: 0.6rem;
+            padding: 2px 6px;
+        }
+        
+        .member-tag--race {
+            background: var(--cream);
+            border: 1px solid var(--light-fawn);
+        }
+        
+        .member-tag--course {
+            background: rgba(123, 107, 67, 0.15);
+            color: var(--olive-bark);
+            font-weight: 600;
+        }
+        
+        /* Violations in Modal */
+        .modal-violations {
+            margin-top: var(--space-xl);
+            padding: var(--space-lg);
+            background: var(--cream);
+            border-left: 3px solid var(--muted-gold);
+        }
+        
+        .modal-violations__title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--olive-wood);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .modal-violations ul {
+            margin: 0;
+            padding-left: var(--space-lg);
+            font-size: 0.8rem;
+            color: var(--olive-bark);
+        }
+        
+        /* ============================================
+           Loading Overlay
+           ============================================ */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(53, 34, 8, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--duration);
+        }
+        
+        .loading-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 2px solid transparent;
+            border-top-color: var(--soft-fawn);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: var(--space-xl);
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-overlay__text {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--cream);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .loading-overlay__subtext {
+            font-size: 0.875rem;
+            color: var(--muted-gold);
+        }
+        
+        /* ============================================
+           Footer
+           ============================================ */
+        .footer {
+            padding: var(--space-xl) 0;
+            border-top: 1px solid var(--light-fawn);
+            text-align: center;
+        }
+        
+        .footer__text {
+            font-size: 0.75rem;
+            color: var(--olive-wood);
+            letter-spacing: 0.05em;
+        }
+        
+        /* ============================================
+           Animations
+           ============================================ */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-up {
+            animation: fadeUp 0.5s var(--ease-out) forwards;
+        }
+        
+        /* ============================================
+           Responsive
+           ============================================ */
+        @media (max-width: 768px) {
+            .hero {
+                padding: var(--space-lg) 0;
+            }
+            
+            .hero__title {
+                font-size: 1.5rem;
+            }
+            
+            .container {
+                padding: 0 var(--space-lg);
+            }
+            
+            .upload-card {
+                padding: var(--space-xl);
+            }
+            
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .teams-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal {
+                margin: var(--space-md);
+            }
+            
+            .modal__body {
+                padding: var(--space-lg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Hero Section -->
+        <header class="hero">
+            <div class="hero__circle hero__circle--1"></div>
+            <div class="hero__circle hero__circle--2"></div>
+            <div class="hero__circle hero__circle--3"></div>
+            
+            <div class="container">
+                <div class="hero__content">
+                    <h1 class="hero__title">D-Team <span>Formation</span></h1>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="main">
+            <div class="container">
+                <!-- Upload Section -->
+                <section class="upload-section">
+                    <div class="section-label">
+                        <span class="section-label__text">Upload Data</span>
+                        <span class="section-label__line"></span>
+                    </div>
+                    
+                    <div class="upload-card">
+                        <div class="upload-zone" id="upload-zone">
+                            <svg class="upload-zone__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <p class="upload-zone__title">Drop your Excel file here</p>
+                            <p class="upload-zone__hint">or click to browse your files</p>
+                            <button type="button" class="upload-zone__btn" id="browse-btn">
+                                Select File
+                            </button>
+                            <input type="file" id="file-input" accept=".xlsx,.xls">
+                        </div>
+                        
+                        <div class="file-selected" id="file-selected">
+                            <svg class="file-selected__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                            </svg>
+                            <span class="file-selected__name" id="file-name"></span>
+                            <button class="file-selected__remove" id="file-remove">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- Settings -->
+                        <div class="settings-panel" id="settings-panel">
+                            <div class="settings-grid">
+                                <div class="form-group">
+                                    <label for="min-team-size">Min Size</label>
+                                    <input type="number" id="min-team-size" value="8" min="4" max="15">
+                                </div>
+                                <div class="form-group">
+                                    <label for="max-team-size">Max Size</label>
+                                    <input type="number" id="max-team-size" value="10" min="4" max="20">
+                                </div>
+                                <div class="form-group">
+                                    <label for="time-limit">Time Limit (s)</label>
+                                    <input type="number" id="time-limit" value="300" min="30" max="600">
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox-group">
+                                        <input type="checkbox" id="allow-flexible" checked>
+                                        <label for="allow-flexible">Flexible size (±1)</label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="run-btn" id="run-btn" disabled>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="5 3 19 12 5 21 5 3"/>
+                                </svg>
+                                Run Solver
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Results Section -->
+                <section class="results-section" id="results-section">
+                    <!-- Stats -->
+                    <div class="section-label">
+                        <span class="section-label__text">Results Overview</span>
+                        <span class="section-label__line"></span>
+                    </div>
+                    
+                    <div class="stats-row" id="stats-row"></div>
+                    
+                    <!-- Download Bar -->
+                    <div class="download-bar">
+                        <span class="download-bar__label">Export your team assignments</span>
+                        <div class="download-bar__actions">
+                            <button class="download-btn download-btn--primary" id="download-excel">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Excel
+                            </button>
+                            <button class="download-btn" id="download-csv">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                CSV
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Teams -->
+                    <div class="section-label">
+                        <span class="section-label__text">Team Assignments</span>
+                        <span class="section-label__line"></span>
+                    </div>
+                    
+                    <div class="teams-header">
+                        <h2 class="teams-header__title">Teams</h2>
+                        <div class="view-toggle">
+                            <button class="view-toggle__btn active" data-view="cards">Cards</button>
+                            <button class="view-toggle__btn" data-view="table">Table</button>
+                        </div>
+                    </div>
+                    
+                    <div class="teams-grid" id="teams-grid"></div>
+                    
+                    <div class="data-table-container" id="teams-table-container">
+                        <div class="table-scroll-wrapper">
+                            <table class="data-table data-table--full">
+                                <thead>
+                                    <tr>
+                                        <!-- Team Assignment -->
+                                        <th class="th-sticky">Team</th>
+                                        <th>Day</th>
+                                        <th>Time</th>
+                                        <th>Format</th>
+                                        <th>Role</th>
+                                        <!-- Identification -->
+                                        <th>ID</th>
+                                        <th>Status</th>
+                                        <th>Date Submitted</th>
+                                        <!-- Category -->
+                                        <th>Category</th>
+                                        <th>Student?</th>
+                                        <th>Faculty?</th>
+                                        <th>Staff?</th>
+                                        <th>Alum?</th>
+                                        <!-- Demographics -->
+                                        <th>Year/Class</th>
+                                        <th>Age Range</th>
+                                        <th>Gender</th>
+                                        <th>Race/Ethnicity</th>
+                                        <!-- Political -->
+                                        <th>Ideology</th>
+                                        <th>Conservative?</th>
+                                        <th>Liberal?</th>
+                                        <th>Moderate?</th>
+                                        <!-- Issue Positions -->
+                                        <th>Immigration Position</th>
+                                        <th>Imm. Agree?</th>
+                                        <th>Imm. Disagree?</th>
+                                        <th>Presidency Position</th>
+                                        <th>Pres. Agree?</th>
+                                        <th>Pres. Disagree?</th>
+                                        <!-- Format & Availability -->
+                                        <th>Format Pref</th>
+                                        <th>Avail. Slots</th>
+                                        <!-- Course Credit -->
+                                        <th>For Credit?</th>
+                                        <th>Courses</th>
+                                        <!-- Connection -->
+                                        <th>How Heard</th>
+                                        <!-- Friend Info -->
+                                        <th>Friend Invited</th>
+                                        <th>Invited By</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="teams-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Friend Pairs -->
+                    <div class="friend-pairs-section" id="friend-pairs-section">
+                        <div class="section-label">
+                            <span class="section-label__text">Friend Pairs</span>
+                            <span class="section-label__line"></span>
+                        </div>
+                        <div class="friend-pairs-grid" id="friend-pairs-grid"></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p class="footer__text">Davidson College · Deliberative Citizenship Initiative</p>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loader"></div>
+        <p class="loading-overlay__text">Optimizing Teams</p>
+        <p class="loading-overlay__subtext">This may take a moment</p>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal-overlay" id="team-modal">
+        <div class="modal modal--wide">
+            <div class="modal__header">
+                <div>
+                    <h2 class="modal__title" id="modal-title">Team Name</h2>
+                    <p class="modal__subtitle" id="modal-subtitle">Schedule · Format</p>
+                </div>
+                <button class="modal__close" id="modal-close">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal__body">
+                <div class="modal-info-grid" id="modal-info-grid"></div>
+                
+                <h3 class="modal-section-title">
+                    Team Members · <span id="modal-member-count">0</span>
+                </h3>
+                
+                <div class="members-cards" id="modal-members-cards"></div>
+                
+                <div class="modal-violations" id="modal-violations" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // ============================================
+        // State
+        // ============================================
+        let currentSolutionId = null;
+        let selectedFile = null;
+        let teamsData = [];
+        
+        // ============================================
+        // Elements
+        // ============================================
+        const $ = (sel) => document.querySelector(sel);
+        const $$ = (sel) => document.querySelectorAll(sel);
+        
+        const uploadZone = $('#upload-zone');
+        const fileInput = $('#file-input');
+        const browseBtn = $('#browse-btn');
+        const fileSelected = $('#file-selected');
+        const fileName = $('#file-name');
+        const fileRemove = $('#file-remove');
+        const settingsPanel = $('#settings-panel');
+        const runBtn = $('#run-btn');
+        const loadingOverlay = $('#loading-overlay');
+        const resultsSection = $('#results-section');
+        const teamModal = $('#team-modal');
+        const modalClose = $('#modal-close');
+        
+        // ============================================
+        // Event Listeners
+        // ============================================
+        
+        browseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            fileInput.click();
+        });
+        
+        uploadZone.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', handleFileSelect);
+        
+        fileRemove.addEventListener('click', () => {
+            selectedFile = null;
+            fileInput.value = '';
+            fileSelected.classList.remove('visible');
+            settingsPanel.classList.remove('visible');
+            runBtn.disabled = true;
+        });
+        
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+        
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                handleFileSelect();
+            }
+        });
+        
+        runBtn.addEventListener('click', runSolver);
+        
+        $('#download-excel').addEventListener('click', () => {
+            if (currentSolutionId) window.location.href = `/download/${currentSolutionId}/excel`;
+        });
+        
+        $('#download-csv').addEventListener('click', () => {
+            if (currentSolutionId) window.location.href = `/download/${currentSolutionId}/csv`;
+        });
+        
+        $$('.view-toggle__btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                $$('.view-toggle__btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const view = btn.dataset.view;
+                $('#teams-grid').style.display = view === 'cards' ? 'grid' : 'none';
+                $('#teams-table-container').classList.toggle('visible', view === 'table');
+            });
+        });
+        
+        modalClose.addEventListener('click', closeModal);
+        teamModal.addEventListener('click', (e) => {
+            if (e.target === teamModal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+        
+        // ============================================
+        // Functions
+        // ============================================
+        
+        function handleFileSelect() {
+            const file = fileInput.files[0];
+            if (file) {
+                selectedFile = file;
+                fileName.textContent = file.name;
+                fileSelected.classList.add('visible');
+                settingsPanel.classList.add('visible');
+                runBtn.disabled = false;
+            }
+        }
+        
+        async function runSolver() {
+            if (!selectedFile) return;
+            
+            loadingOverlay.classList.add('visible');
+            
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('min_team_size', $('#min-team-size').value);
+            formData.append('max_team_size', $('#max-team-size').value);
+            formData.append('time_limit', $('#time-limit').value);
+            formData.append('allow_flexible', $('#allow-flexible').checked);
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    currentSolutionId = data.solution_id;
+                    displayResults(data);
+                } else {
+                    alert(`Error: ${data.error}`);
+                }
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            } finally {
+                loadingOverlay.classList.remove('visible');
+            }
+        }
+        
+        function displayResults(data) {
+            resultsSection.classList.add('visible');
+            teamsData = data.teams;
+            
+            const stats = data.statistics;
+            
+            // Stats
+            $('#stats-row').innerHTML = `
+                <div class="stat-card fade-up">
+                    <div class="stat-card__value">${stats.teams_formed}</div>
+                    <div class="stat-card__label">Teams</div>
+                </div>
+                <div class="stat-card fade-up" style="animation-delay: 0.1s">
+                    <div class="stat-card__value">${stats.assigned}</div>
+                    <div class="stat-card__label">Assigned</div>
+                </div>
+                <div class="stat-card fade-up" style="animation-delay: 0.2s">
+                    <div class="stat-card__value">${stats.assignment_rate}%</div>
+                    <div class="stat-card__label">Rate</div>
+                </div>
+                <div class="stat-card fade-up" style="animation-delay: 0.3s">
+                    <div class="stat-card__value">${stats.friend_pairs_satisfied}/${stats.friend_pairs_total}</div>
+                    <div class="stat-card__label">Friend Pairs</div>
+                </div>
+            `;
+            
+            // Teams Grid
+            $('#teams-grid').innerHTML = data.teams.map((team, i) => `
+                <div class="team-card team-card--${team.status} fade-up" style="animation-delay: ${0.05 * i}s" onclick="openTeamModal(${i})">
+                    <div class="team-card__header">
+                        <div class="team-card__top">
+                            <span class="team-card__name">${team.id}</span>
+                            <span class="team-card__badge team-card__badge--${team.format === 'Virtual' ? 'virtual' : 'inperson'}">
+                                ${team.format}
+                            </span>
+                        </div>
+                        <div class="team-card__schedule">${team.day} · ${team.time}</div>
+                    </div>
+                    <div class="team-card__body">
+                        <div class="team-card__grid">
+                            <div class="team-card__stat">
+                                <div class="team-card__stat-value">${team.size}</div>
+                                <div class="team-card__stat-label">Size</div>
+                            </div>
+                            <div class="team-card__stat">
+                                <div class="team-card__stat-value">${team.composition.students}</div>
+                                <div class="team-card__stat-label">Students</div>
+                            </div>
+                            <div class="team-card__stat">
+                                <div class="team-card__stat-value">${team.composition.non_students}</div>
+                                <div class="team-card__stat-label">Non-Stu</div>
+                            </div>
+                        </div>
+                        <div class="team-card__facilitators">
+                            Facilitators: #${team.primary_facilitator || '—'} · #${team.secondary_facilitator || '—'}
+                        </div>
+                    </div>
+                    <div class="team-card__cta">
+                        View ${team.size} members →
+                    </div>
+                </div>
+            `).join('');
+            
+            // Teams Table - Comprehensive view with ALL participant data
+            let tableRows = [];
+            data.teams.forEach(team => {
+                team.members.forEach(m => {
+                    // Determine role
+                    let role = '';
+                    if (m.id === team.primary_facilitator) role = 'Primary Facilitator';
+                    else if (m.id === team.secondary_facilitator) role = 'Secondary Facilitator';
+                    
+                    // Gender display
+                    let gender = '—';
+                    if (m.is_female) gender = 'Female';
+                    else if (m.is_male) gender = 'Male';
+                    else if (m.is_nonbinary) gender = 'Nonbinary';
+                    else if (m.is_trans) gender = 'Trans';
+                    else if (m.prefer_not_say_gender) gender = 'Prefer not to say';
+                    
+                    // Race display
+                    let race = '—';
+                    if (m.races && m.races.length > 0) {
+                        race = m.races.join(', ');
+                    } else if (m.is_white) {
+                        race = 'White';
+                    } else if (m.is_nonwhite) {
+                        race = 'Non-White';
+                    }
+                    
+                    // Courses display
+                    let courses = '—';
+                    if (m.courses && m.courses.length > 0) {
+                        courses = m.courses.join(', ');
+                    }
+                    
+                    // Format preference display
+                    let formatPref = 'Either';
+                    if (m.format_pref === 'P') formatPref = 'In-Person Only';
+                    else if (m.format_pref === 'Z') formatPref = 'Virtual Only';
+                    
+                    tableRows.push(`
+                        <tr class="${role ? 'row-facilitator' : ''}">
+                            <!-- Team Assignment -->
+                            <td class="td-sticky"><strong>${team.id}</strong></td>
+                            <td>${team.day}</td>
+                            <td>${team.time}</td>
+                            <td>${team.format}</td>
+                            <td class="${role ? 'cell-highlight' : ''}">${role || '—'}</td>
+                            <!-- Identification -->
+                            <td><strong>#${m.id}</strong></td>
+                            <td>${m.status || '—'}</td>
+                            <td>${m.date_submitted || '—'}</td>
+                            <!-- Category -->
+                            <td>${m.category || '—'}</td>
+                            <td>${m.is_student ? '✓' : '—'}</td>
+                            <td>${m.is_faculty ? '✓' : '—'}</td>
+                            <td>${m.is_staff ? '✓' : '—'}</td>
+                            <td>${m.is_alum ? '✓' : '—'}</td>
+                            <!-- Demographics -->
+                            <td>${m.year || '—'}</td>
+                            <td>${m.age_range || '—'}</td>
+                            <td>${gender}</td>
+                            <td>${race}</td>
+                            <!-- Political -->
+                            <td>${m.ideology || '—'}</td>
+                            <td class="${m.is_conservative ? 'cell-conservative' : ''}">${m.is_conservative ? '✓' : '—'}</td>
+                            <td class="${m.is_liberal ? 'cell-liberal' : ''}">${m.is_liberal ? '✓' : '—'}</td>
+                            <td>${m.is_moderate ? '✓' : '—'}</td>
+                            <!-- Issue Positions -->
+                            <td>${m.issue1_position || '—'}</td>
+                            <td>${m.issue1_agree ? '✓' : '—'}</td>
+                            <td>${m.issue1_disagree ? '✓' : '—'}</td>
+                            <td>${m.issue2_position || '—'}</td>
+                            <td>${m.issue2_agree ? '✓' : '—'}</td>
+                            <td>${m.issue2_disagree ? '✓' : '—'}</td>
+                            <!-- Format & Availability -->
+                            <td>${formatPref}</td>
+                            <td>${m.total_available || '—'}</td>
+                            <!-- Course Credit -->
+                            <td class="${m.taking_for_credit ? 'cell-credit' : ''}">${m.taking_for_credit ? '✓ Yes' : 'No'}</td>
+                            <td>${courses}</td>
+                            <!-- Connection -->
+                            <td>${m.connection || '—'}</td>
+                            <!-- Friend Info -->
+                            <td>${m.friend_invited ? '#' + m.friend_invited : '—'}</td>
+                            <td>${m.friend_invited_by ? '#' + m.friend_invited_by : '—'}</td>
+                        </tr>
+                    `);
+                });
+            });
+            $('#teams-table-body').innerHTML = tableRows.join('');
+            
+            // Friend Pairs
+            const friendSection = $('#friend-pairs-section');
+            if (data.friend_pairs_satisfied.length > 0 || data.friend_pairs_unsatisfied.length > 0) {
+                friendSection.style.display = 'block';
+                
+                $('#friend-pairs-grid').innerHTML = 
+                    data.friend_pairs_satisfied.map(p => `
+                        <div class="friend-pair">
+                            <svg class="friend-pair__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 6L9 17l-5-5"/>
+                            </svg>
+                            <span>#${p.p1} & #${p.p2} → ${p.team}</span>
+                        </div>
+                    `).join('') +
+                    data.friend_pairs_unsatisfied.map(p => `
+                        <div class="friend-pair friend-pair--unsatisfied">
+                            <svg class="friend-pair__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                            <span>#${p.p1} & #${p.p2}</span>
+                        </div>
+                    `).join('');
+            } else {
+                friendSection.style.display = 'none';
+            }
+            
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function openTeamModal(index) {
+            const team = teamsData[index];
+            if (!team) return;
+            
+            $('#modal-title').textContent = team.id;
+            $('#modal-subtitle').textContent = `${team.day} · ${team.time} · ${team.format}`;
+            
+            $('#modal-info-grid').innerHTML = `
+                <div class="modal-info-item">
+                    <div class="modal-info-item__value">${team.size}</div>
+                    <div class="modal-info-item__label">Size</div>
+                </div>
+                <div class="modal-info-item">
+                    <div class="modal-info-item__value">${team.composition.students}</div>
+                    <div class="modal-info-item__label">Students</div>
+                </div>
+                <div class="modal-info-item">
+                    <div class="modal-info-item__value">${team.composition.non_students}</div>
+                    <div class="modal-info-item__label">Non-Stu</div>
+                </div>
+                <div class="modal-info-item">
+                    <div class="modal-info-item__value">${team.composition.women}</div>
+                    <div class="modal-info-item__label">Women</div>
+                </div>
+                <div class="modal-info-item">
+                    <div class="modal-info-item__value">${team.composition.men}</div>
+                    <div class="modal-info-item__label">Men</div>
+                </div>
+                <div class="modal-info-item">
+                    <div class="modal-info-item__value">${team.composition.conservatives}</div>
+                    <div class="modal-info-item__label">Conserv.</div>
+                </div>
+                <div class="modal-info-item">
+                    <div class="modal-info-item__value">${team.composition.liberals}</div>
+                    <div class="modal-info-item__label">Liberal</div>
+                </div>
+                <div class="modal-info-item">
+                    <div class="modal-info-item__value">${team.composition.white}</div>
+                    <div class="modal-info-item__label">White</div>
+                </div>
+                <div class="modal-info-item">
+                    <div class="modal-info-item__value">${team.composition.non_white}</div>
+                    <div class="modal-info-item__label">Non-White</div>
+                </div>
+            `;
+            
+            $('#modal-member-count').textContent = team.members.length;
+            
+            // Build comprehensive member cards
+            $('#modal-members-cards').innerHTML = team.members.map(m => {
+                // Determine role
+                let role = m.id === team.primary_facilitator ? 'Primary Facilitator' : 
+                           m.id === team.secondary_facilitator ? 'Secondary Facilitator' : null;
+                let isFacilitator = role !== null;
+                
+                // Build badges
+                let badges = [];
+                if (role) badges.push(`<span class="member-badge member-badge--facilitator">${role}</span>`);
+                badges.push(`<span class="member-badge member-badge--${m.is_student ? 'student' : 'non-student'}">${m.category || (m.is_student ? 'Student' : 'Non-Student')}</span>`);
+                if (m.taking_for_credit) badges.push(`<span class="member-badge member-card__value--credit">📚 For Credit</span>`);
+                
+                // Gender display
+                let genderDisplay = '—';
+                if (m.is_female) genderDisplay = 'Female';
+                else if (m.is_male) genderDisplay = 'Male';
+                else if (m.is_nonbinary) genderDisplay = 'Nonbinary';
+                else if (m.is_trans) genderDisplay = 'Trans';
+                else if (m.prefer_not_say_gender) genderDisplay = 'Prefer not to say';
+                
+                // Ideology display
+                let ideologyDisplay = m.ideology || '—';
+                if (ideologyDisplay === '—') {
+                    if (m.is_conservative) ideologyDisplay = 'Conservative';
+                    else if (m.is_liberal) ideologyDisplay = 'Liberal';
+                    else if (m.is_moderate) ideologyDisplay = 'Moderate';
+                }
+                
+                // Race tags
+                let raceTags = '';
+                if (m.races && m.races.length > 0) {
+                    raceTags = m.races.map(r => `<span class="member-tag member-tag--small member-tag--race">${r}</span>`).join('');
+                } else if (m.is_white) {
+                    raceTags = '<span class="member-tag member-tag--small member-tag--race">White</span>';
+                } else if (m.is_nonwhite) {
+                    raceTags = '<span class="member-tag member-tag--small member-tag--race">Non-White</span>';
+                }
+                
+                // Course tags
+                let courseTags = '';
+                if (m.courses && m.courses.length > 0) {
+                    courseTags = m.courses.map(c => `<span class="member-tag member-tag--small member-tag--course">${c}</span>`).join('');
+                }
+                
+                // Format friend info
+                let friendInfo = '';
+                if (m.friend_invited) {
+                    friendInfo += `Invited #${m.friend_invited}`;
+                    if (m.invited_friend_importance) friendInfo += ` (${m.invited_friend_importance})`;
+                }
+                if (m.friend_invited_by) {
+                    if (friendInfo) friendInfo += ' · ';
+                    friendInfo += `Invited by #${m.friend_invited_by}`;
+                    if (m.been_invited_importance) friendInfo += ` (${m.been_invited_importance})`;
+                }
+                
+                return `
+                    <div class="member-card ${isFacilitator ? 'member-card--facilitator' : ''}">
+                        <div class="member-card__header">
+                            <span class="member-card__id">Participant #${m.id}</span>
+                            <div class="member-card__badges">${badges.join('')}</div>
+                        </div>
+                        <div class="member-card__body">
+                            <div class="member-card__grid">
+                                <!-- Demographics Section -->
+                                <div class="member-card__section">
+                                    <div class="member-card__section-title">Demographics</div>
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Category</span>
+                                        <span class="member-card__value">${m.category || '—'}</span>
+                                    </div>
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Gender</span>
+                                        <span class="member-card__value">${genderDisplay}</span>
+                                    </div>
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Year/Age</span>
+                                        <span class="member-card__value">${m.year || m.age_range || '—'}</span>
+                                    </div>
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Race/Ethnicity</span>
+                                    </div>
+                                    <div class="member-card__tags">${raceTags || '<span class="member-tag member-tag--small">—</span>'}</div>
+                                </div>
+                                
+                                <!-- Political Section -->
+                                <div class="member-card__section">
+                                    <div class="member-card__section-title">Political Views</div>
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Ideology</span>
+                                        <span class="member-card__value ${m.is_conservative ? 'member-card__value--highlight' : ''}">${ideologyDisplay}</span>
+                                    </div>
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Immigration Issue</span>
+                                        <span class="member-card__value">${m.issue1_position || '—'}</span>
+                                    </div>
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Presidency Issue</span>
+                                        <span class="member-card__value">${m.issue2_position || '—'}</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Participation Section -->
+                                <div class="member-card__section">
+                                    <div class="member-card__section-title">Participation</div>
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Format Pref.</span>
+                                        <span class="member-card__value">${m.format_pref === 'P' ? 'In-Person Only' : m.format_pref === 'Z' ? 'Virtual Only' : 'Either'}</span>
+                                    </div>
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Available Slots</span>
+                                        <span class="member-card__value">${m.total_available || '—'}</span>
+                                    </div>
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">For Class Credit</span>
+                                        <span class="member-card__value ${m.taking_for_credit ? 'member-card__value--credit' : ''}">${m.taking_for_credit ? 'Yes' : 'No'}</span>
+                                    </div>
+                                    ${m.taking_for_credit && m.courses && m.courses.length > 0 ? `
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Course(s)</span>
+                                    </div>
+                                    <div class="member-card__tags">${courseTags}</div>
+                                    ` : ''}
+                                </div>
+                                
+                                <!-- Connection Section -->
+                                <div class="member-card__section">
+                                    <div class="member-card__section-title">Registration Info</div>
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Connection</span>
+                                        <span class="member-card__value">${m.connection || '—'}</span>
+                                    </div>
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Status</span>
+                                        <span class="member-card__value">${m.status || '—'}</span>
+                                    </div>
+                                    ${friendInfo ? `
+                                    <div class="member-card__row">
+                                        <span class="member-card__label">Friend Request</span>
+                                        <span class="member-card__value">${friendInfo}</span>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Violations
+            const violationsEl = $('#modal-violations');
+            if (team.hard_violations.length > 0 || team.soft_violations.length > 0) {
+                violationsEl.style.display = 'block';
+                violationsEl.innerHTML = `
+                    <div class="modal-violations__title">Notes</div>
+                    <ul>
+                        ${team.hard_violations.map(v => `<li><strong>⚠</strong> ${v}</li>`).join('')}
+                        ${team.soft_violations.map(v => `<li>${v}</li>`).join('')}
+                    </ul>
+                `;
+            } else {
+                violationsEl.style.display = 'none';
+            }
+            
+            teamModal.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeModal() {
+            teamModal.classList.remove('visible');
+            document.body.style.overflow = '';
+        }
+    </script>
+</body>
+</html>
