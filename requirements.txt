@@ -12,5 +12,5 @@ openpyxl>=3.0.0  # Excel file support
 # Optimization Solver
 pulp>=2.6.0
 
-# Production Server (optional, for deployment)
-# gunicorn>=20.0.0
+# Production Server (required for Railway)
+gunicorn>=20.0.0
