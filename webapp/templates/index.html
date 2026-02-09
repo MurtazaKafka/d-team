@@ -15,21 +15,16 @@
            Design System - Vintage Minimalist
            ============================================ */
         :root {
-            /* Color Palette */
             --dark-coffee: #352208;
             --soft-fawn: #e1bb80;
             --olive-wood: #7b6b43;
             --olive-bark: #685634;
             --olive-wood-2: #806443;
-            
-            /* Extended Palette */
             --cream: #f7f3eb;
             --warm-white: #fdfcf9;
             --light-fawn: #f0dfc4;
             --muted-gold: #c9a86c;
             --deep-bark: #4a3d24;
-            
-            /* Semantic Colors */
             --text-primary: var(--dark-coffee);
             --text-secondary: var(--olive-bark);
             --text-muted: var(--olive-wood);
@@ -37,12 +32,8 @@
             --bg-secondary: var(--cream);
             --accent: var(--soft-fawn);
             --accent-dark: var(--muted-gold);
-            
-            /* Typography */
             --font-display: 'Playfair Display', Georgia, serif;
             --font-body: 'Inter', -apple-system, sans-serif;
-            
-            /* Spacing */
             --space-xs: 0.25rem;
             --space-sm: 0.5rem;
             --space-md: 1rem;
@@ -51,26 +42,12 @@
             --space-2xl: 3rem;
             --space-3xl: 4rem;
             --space-4xl: 6rem;
-            
-            /* Transitions */
             --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
             --duration: 0.4s;
         }
         
-        /* ============================================
-           Reset & Base
-           ============================================ */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        html {
-            font-size: 16px;
-            scroll-behavior: smooth;
-        }
-        
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 16px; scroll-behavior: smooth; }
         body {
             font-family: var(--font-body);
             background: var(--bg-primary);
@@ -79,25 +56,12 @@
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
         }
-        
+        .app { min-height: 100vh; display: flex; flex-direction: column; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 var(--space-xl); }
+        .container--wide { max-width: 1400px; }
+
         /* ============================================
-           Layout
-           ============================================ */
-        .app {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 var(--space-xl);
-        }
-        
-        /* ============================================
-           Header - Geometric Hero
+           Header
            ============================================ */
         .hero {
             position: relative;
@@ -105,1291 +69,449 @@
             background: var(--dark-coffee);
             overflow: hidden;
         }
-        
-        /* Geometric Background Pattern */
         .hero::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background-image: 
                 linear-gradient(45deg, transparent 45%, var(--olive-bark) 45%, var(--olive-bark) 55%, transparent 55%),
                 linear-gradient(-45deg, transparent 45%, var(--olive-bark) 45%, var(--olive-bark) 55%, transparent 55%);
             background-size: 60px 60px;
             opacity: 0.08;
         }
-        
-        /* Decorative Circles */
-        .hero__circle {
-            position: absolute;
-            border: 1px solid var(--soft-fawn);
-            border-radius: 50%;
-            opacity: 0.15;
-        }
-        
-        .hero__circle--1 {
-            width: 200px;
-            height: 200px;
-            top: -80px;
-            right: -50px;
-        }
-        
-        .hero__circle--2 {
-            width: 100px;
-            height: 100px;
-            bottom: -30px;
-            left: 10%;
-        }
-        
-        .hero__circle--3 {
-            width: 40px;
-            height: 40px;
-            top: 20%;
-            left: 5%;
-            background: var(--soft-fawn);
-            opacity: 0.1;
-        }
-        
-        .hero__content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-        
+        .hero__circle { position: absolute; border: 1px solid var(--soft-fawn); border-radius: 50%; opacity: 0.15; }
+        .hero__circle--1 { width: 200px; height: 200px; top: -80px; right: -50px; }
+        .hero__circle--2 { width: 100px; height: 100px; bottom: -30px; left: 10%; }
+        .hero__circle--3 { width: 40px; height: 40px; top: 20%; left: 5%; background: var(--soft-fawn); opacity: 0.1; }
+        .hero__content { position: relative; z-index: 1; text-align: center; }
         .hero__title {
             font-family: var(--font-display);
             font-size: clamp(1.75rem, 4vw, 2.5rem);
-            font-weight: 400;
-            color: var(--cream);
-            letter-spacing: -0.02em;
-            line-height: 1.1;
+            font-weight: 400; color: var(--cream);
+            letter-spacing: -0.02em; line-height: 1.1;
         }
-        
-        .hero__title span {
-            color: var(--soft-fawn);
-            font-style: italic;
-        }
-        
+        .hero__title span { color: var(--soft-fawn); font-style: italic; }
+
         /* ============================================
            Main Content
            ============================================ */
-        .main {
-            flex: 1;
-            padding: var(--space-3xl) 0;
+        .main { flex: 1; padding: var(--space-3xl) 0; }
+
+        /* ============================================
+           Section Labels
+           ============================================ */
+        .section-label { display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg); }
+        .section-label__line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--olive-wood) 0%, transparent 100%); }
+        .section-label__text {
+            font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--olive-wood);
         }
-        
+
         /* ============================================
            Upload Section
            ============================================ */
-        .upload-section {
-            max-width: 700px;
-            margin: 0 auto var(--space-3xl);
-        }
-        
-        .section-label {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-            margin-bottom: var(--space-lg);
-        }
-        
-        .section-label__line {
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, var(--olive-wood) 0%, transparent 100%);
-        }
-        
-        .section-label__text {
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--olive-wood);
-        }
-        
+        .upload-section { max-width: 700px; margin: 0 auto var(--space-3xl); }
         .upload-card {
-            position: relative;
-            background: var(--warm-white);
-            border: 1px solid var(--light-fawn);
-            padding: var(--space-3xl);
+            position: relative; background: var(--warm-white);
+            border: 1px solid var(--light-fawn); padding: var(--space-3xl);
             transition: all var(--duration) var(--ease-out);
         }
-        
-        /* Geometric corner accents */
-        .upload-card::before,
-        .upload-card::after {
-            content: '';
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--muted-gold);
-            transition: all var(--duration) var(--ease-out);
+        .upload-card::before, .upload-card::after {
+            content: ''; position: absolute; width: 40px; height: 40px;
+            border: 1px solid var(--muted-gold); transition: all var(--duration) var(--ease-out);
         }
-        
-        .upload-card::before {
-            top: -1px;
-            left: -1px;
-            border-right: none;
-            border-bottom: none;
-        }
-        
-        .upload-card::after {
-            bottom: -1px;
-            right: -1px;
-            border-left: none;
-            border-top: none;
-        }
-        
-        .upload-card:hover::before,
-        .upload-card:hover::after {
-            width: 60px;
-            height: 60px;
-        }
-        
+        .upload-card::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+        .upload-card::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+        .upload-card:hover::before, .upload-card:hover::after { width: 60px; height: 60px; }
+
         .upload-zone {
-            border: 2px dashed var(--light-fawn);
-            padding: var(--space-3xl) var(--space-xl);
-            text-align: center;
-            cursor: pointer;
-            transition: all var(--duration) var(--ease-out);
-            position: relative;
+            border: 2px dashed var(--light-fawn); padding: var(--space-3xl) var(--space-xl);
+            text-align: center; cursor: pointer; transition: all var(--duration) var(--ease-out);
         }
-        
-        .upload-zone:hover,
-        .upload-zone.dragover {
-            border-color: var(--muted-gold);
-            background: var(--cream);
-        }
-        
-        .upload-zone__icon {
-            width: 48px;
-            height: 48px;
-            margin: 0 auto var(--space-lg);
-            color: var(--olive-wood);
-            stroke-width: 1;
-        }
-        
-        .upload-zone__title {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            color: var(--dark-coffee);
-            margin-bottom: var(--space-sm);
-        }
-        
-        .upload-zone__hint {
-            font-size: 0.875rem;
-            color: var(--olive-wood);
-            margin-bottom: var(--space-xl);
-        }
-        
+        .upload-zone:hover, .upload-zone.dragover { border-color: var(--muted-gold); background: var(--cream); }
+        .upload-zone__icon { width: 48px; height: 48px; margin: 0 auto var(--space-lg); color: var(--olive-wood); stroke-width: 1; }
+        .upload-zone__title { font-family: var(--font-display); font-size: 1.5rem; color: var(--dark-coffee); margin-bottom: var(--space-sm); }
+        .upload-zone__hint { font-size: 0.875rem; color: var(--olive-wood); margin-bottom: var(--space-xl); }
         .upload-zone__btn {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-sm);
-            padding: var(--space-md) var(--space-xl);
-            background: var(--dark-coffee);
-            color: var(--cream);
-            border: none;
-            font-family: var(--font-body);
-            font-size: 0.875rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all var(--duration) var(--ease-out);
+            display: inline-flex; align-items: center; gap: var(--space-sm);
+            padding: var(--space-md) var(--space-xl); background: var(--dark-coffee);
+            color: var(--cream); border: none; font-family: var(--font-body);
+            font-size: 0.875rem; font-weight: 500; letter-spacing: 0.05em;
+            cursor: pointer; transition: all var(--duration) var(--ease-out);
         }
-        
-        .upload-zone__btn:hover {
-            background: var(--olive-bark);
-            transform: translateY(-2px);
-        }
-        
-        .upload-zone input[type="file"] {
-            display: none;
-        }
-        
-        /* Selected File Display */
+        .upload-zone__btn:hover { background: var(--olive-bark); transform: translateY(-2px); }
+        .upload-zone input[type="file"] { display: none; }
+
         .file-selected {
-            display: none;
-            align-items: center;
-            gap: var(--space-md);
-            padding: var(--space-md) var(--space-lg);
-            background: var(--cream);
-            border: 1px solid var(--light-fawn);
-            margin-top: var(--space-lg);
+            display: none; align-items: center; gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg); background: var(--cream);
+            border: 1px solid var(--light-fawn); margin-top: var(--space-lg);
         }
-        
-        .file-selected.visible {
-            display: flex;
-        }
-        
-        .file-selected__icon {
-            width: 24px;
-            height: 24px;
-            color: var(--olive-wood);
-        }
-        
-        .file-selected__name {
-            flex: 1;
-            font-size: 0.875rem;
-            color: var(--dark-coffee);
-            font-weight: 500;
-        }
-        
-        .file-selected__remove {
-            background: none;
-            border: none;
-            color: var(--olive-wood);
-            cursor: pointer;
-            padding: var(--space-xs);
-            transition: color var(--duration);
-        }
-        
-        .file-selected__remove:hover {
-            color: var(--dark-coffee);
-        }
-        
+        .file-selected.visible { display: flex; }
+        .file-selected__icon { width: 24px; height: 24px; color: var(--olive-wood); }
+        .file-selected__name { flex: 1; font-size: 0.875rem; color: var(--dark-coffee); font-weight: 500; }
+        .file-selected__remove { background: none; border: none; color: var(--olive-wood); cursor: pointer; padding: var(--space-xs); transition: color var(--duration); }
+        .file-selected__remove:hover { color: var(--dark-coffee); }
+
         /* ============================================
            Settings Panel
            ============================================ */
-        .settings-panel {
-            display: none;
-            margin-top: var(--space-xl);
-            padding-top: var(--space-xl);
-            border-top: 1px solid var(--light-fawn);
-        }
-        
-        .settings-panel.visible {
-            display: block;
-        }
-        
-        .settings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: var(--space-lg);
-            margin-bottom: var(--space-xl);
-        }
-        
+        .settings-panel { display: none; margin-top: var(--space-xl); padding-top: var(--space-xl); border-top: 1px solid var(--light-fawn); }
+        .settings-panel.visible { display: block; }
+        .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-lg); margin-bottom: var(--space-xl); }
         .form-group label {
-            display: block;
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--olive-wood);
-            margin-bottom: var(--space-sm);
+            display: block; font-size: 0.7rem; font-weight: 600;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--olive-wood); margin-bottom: var(--space-sm);
         }
-        
         .form-group input[type="number"] {
-            width: 100%;
-            padding: var(--space-md);
-            background: var(--cream);
-            border: 1px solid var(--light-fawn);
-            font-family: var(--font-body);
-            font-size: 1rem;
-            color: var(--dark-coffee);
-            transition: all var(--duration);
+            width: 100%; padding: var(--space-md); background: var(--cream);
+            border: 1px solid var(--light-fawn); font-family: var(--font-body);
+            font-size: 1rem; color: var(--dark-coffee); transition: all var(--duration);
         }
-        
-        .form-group input[type="number"]:focus {
-            outline: none;
-            border-color: var(--muted-gold);
-            background: var(--warm-white);
-        }
-        
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-            padding-top: var(--space-md);
-        }
-        
-        .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--dark-coffee);
-        }
-        
-        .checkbox-group label {
-            margin: 0;
-            font-size: 0.875rem;
-            text-transform: none;
-            letter-spacing: 0;
-            color: var(--text-secondary);
-        }
-        
-        /* Run Button */
+        .form-group input[type="number"]:focus { outline: none; border-color: var(--muted-gold); background: var(--warm-white); }
+        .checkbox-group { display: flex; align-items: center; gap: var(--space-sm); padding-top: var(--space-md); }
+        .checkbox-group input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--dark-coffee); }
+        .checkbox-group label { margin: 0; font-size: 0.875rem; text-transform: none; letter-spacing: 0; color: var(--text-secondary); }
+
         .run-btn {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--space-md);
-            padding: var(--space-lg) var(--space-xl);
-            background: var(--dark-coffee);
-            color: var(--cream);
-            border: none;
-            font-family: var(--font-body);
-            font-size: 1rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all var(--duration) var(--ease-out);
-            position: relative;
-            overflow: hidden;
+            width: 100%; display: flex; align-items: center; justify-content: center;
+            gap: var(--space-md); padding: var(--space-lg) var(--space-xl);
+            background: var(--dark-coffee); color: var(--cream); border: none;
+            font-family: var(--font-body); font-size: 1rem; font-weight: 500;
+            letter-spacing: 0.05em; cursor: pointer; transition: all var(--duration) var(--ease-out);
+            position: relative; overflow: hidden;
         }
-        
         .run-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(225, 187, 128, 0.2), transparent);
             transition: left 0.6s var(--ease-out);
         }
-        
-        .run-btn:hover::before {
-            left: 100%;
-        }
-        
-        .run-btn:hover {
-            background: var(--olive-bark);
-        }
-        
-        .run-btn:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-        
-        .run-btn:disabled:hover::before {
-            left: -100%;
-        }
-        
+        .run-btn:hover::before { left: 100%; }
+        .run-btn:hover { background: var(--olive-bark); }
+        .run-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .run-btn:disabled:hover::before { left: -100%; }
+
         /* ============================================
            Results Section
            ============================================ */
-        .results-section {
-            display: none;
-        }
-        
-        .results-section.visible {
-            display: block;
-        }
-        
+        .results-section { display: none; }
+        .results-section.visible { display: block; }
+
         /* Stats Row */
         .stats-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1px;
-            background: var(--light-fawn);
-            border: 1px solid var(--light-fawn);
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1px; background: var(--light-fawn); border: 1px solid var(--light-fawn);
             margin-bottom: var(--space-3xl);
         }
-        
-        .stat-card {
-            background: var(--warm-white);
-            padding: var(--space-xl);
-            text-align: center;
-            position: relative;
-        }
-        
+        .stat-card { background: var(--warm-white); padding: var(--space-xl); text-align: center; }
         .stat-card__value {
-            font-family: var(--font-display);
-            font-size: 2.5rem;
-            font-weight: 400;
-            color: var(--dark-coffee);
-            line-height: 1;
-            margin-bottom: var(--space-sm);
+            font-family: var(--font-display); font-size: 2rem; font-weight: 400;
+            color: var(--dark-coffee); line-height: 1; margin-bottom: var(--space-sm);
         }
-        
         .stat-card__label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--olive-wood);
+            font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--olive-wood);
         }
-        
+
         /* Download Bar */
         .download-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: var(--space-lg) var(--space-xl);
-            background: var(--cream);
-            border: 1px solid var(--light-fawn);
-            margin-bottom: var(--space-3xl);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: var(--space-lg) var(--space-xl); background: var(--cream);
+            border: 1px solid var(--light-fawn); margin-bottom: var(--space-3xl);
         }
-        
-        .download-bar__label {
-            font-size: 0.875rem;
-            color: var(--olive-wood);
-        }
-        
-        .download-bar__actions {
-            display: flex;
-            gap: var(--space-md);
-        }
-        
+        .download-bar__label { font-size: 0.875rem; color: var(--olive-wood); }
+        .download-bar__actions { display: flex; gap: var(--space-md); }
         .download-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-sm);
-            padding: var(--space-sm) var(--space-lg);
-            background: transparent;
-            color: var(--dark-coffee);
-            border: 1px solid var(--dark-coffee);
-            font-family: var(--font-body);
-            font-size: 0.8rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            transition: all var(--duration);
+            display: inline-flex; align-items: center; gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg); background: transparent;
+            color: var(--dark-coffee); border: 1px solid var(--dark-coffee);
+            font-family: var(--font-body); font-size: 0.8rem; font-weight: 500;
+            letter-spacing: 0.05em; cursor: pointer; transition: all var(--duration);
         }
-        
-        .download-btn:hover {
-            background: var(--dark-coffee);
-            color: var(--cream);
+        .download-btn:hover { background: var(--dark-coffee); color: var(--cream); }
+        .download-btn--primary { background: var(--dark-coffee); color: var(--cream); }
+        .download-btn--primary:hover { background: var(--olive-bark); border-color: var(--olive-bark); }
+
+        /* ============================================
+           Analytics Dashboard
+           ============================================ */
+        .analytics-section { margin-bottom: var(--space-3xl); }
+        .analytics-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
         }
-        
-        .download-btn--primary {
-            background: var(--dark-coffee);
-            color: var(--cream);
+        .analytics-card {
+            background: var(--warm-white); border: 1px solid var(--light-fawn);
+            padding: var(--space-xl);
         }
-        
-        .download-btn--primary:hover {
-            background: var(--olive-bark);
-            border-color: var(--olive-bark);
+        .analytics-card__title {
+            font-family: var(--font-display); font-size: 1.1rem; color: var(--dark-coffee);
+            margin-bottom: var(--space-lg); padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--light-fawn);
         }
-        
+        .analytics-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: var(--space-sm) 0; font-size: 0.85rem;
+        }
+        .analytics-row__label { color: var(--olive-wood); }
+        .analytics-row__value { font-weight: 600; color: var(--dark-coffee); }
+        .analytics-bar {
+            display: flex; align-items: center; gap: var(--space-md);
+            padding: var(--space-xs) 0;
+        }
+        .analytics-bar__label { font-size: 0.75rem; color: var(--olive-wood); min-width: 80px; }
+        .analytics-bar__track {
+            flex: 1; height: 8px; background: var(--cream); border: 1px solid var(--light-fawn);
+            overflow: hidden;
+        }
+        .analytics-bar__fill { height: 100%; background: var(--muted-gold); transition: width 0.8s var(--ease-out); }
+        .analytics-bar__value { font-size: 0.75rem; font-weight: 600; color: var(--dark-coffee); min-width: 30px; text-align: right; }
+
+        /* ============================================
+           Facilitator Analytics
+           ============================================ */
+        .facilitator-section { margin-bottom: var(--space-3xl); }
+        .facilitator-stats {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1px; background: var(--light-fawn); border: 1px solid var(--light-fawn);
+            margin-bottom: var(--space-xl);
+        }
+        .facilitator-stat { background: var(--warm-white); padding: var(--space-lg); text-align: center; }
+        .facilitator-stat__value { font-family: var(--font-display); font-size: 1.8rem; color: var(--dark-coffee); line-height: 1; }
+        .facilitator-stat__label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--olive-wood); margin-top: var(--space-xs); }
+
+        .fellows-table-container {
+            background: var(--warm-white); border: 1px solid var(--light-fawn);
+            overflow: hidden;
+        }
+        .fellows-table-scroll { overflow-x: auto; max-height: 400px; overflow-y: auto; }
+        .fellows-table {
+            width: 100%; border-collapse: collapse; min-width: 800px;
+        }
+        .fellows-table th, .fellows-table td {
+            padding: var(--space-sm) var(--space-md); text-align: left;
+            border-bottom: 1px solid var(--light-fawn); font-size: 0.8rem; white-space: nowrap;
+        }
+        .fellows-table th {
+            background: var(--dark-coffee); font-size: 0.65rem; font-weight: 600;
+            letter-spacing: 0.05em; text-transform: uppercase; color: var(--soft-fawn);
+            position: sticky; top: 0; z-index: 10;
+        }
+        .fellows-table tr:hover td { background: var(--cream); }
+        .fellows-table tr:nth-child(even) td { background: rgba(225, 187, 128, 0.05); }
+
+        .badge { display: inline-block; padding: 2px 8px; font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em; }
+        .badge--new { background: #e8f5e9; color: #2e7d32; }
+        .badge--returning { background: #fff3e0; color: #e65100; }
+        .badge--assigned { background: var(--soft-fawn); color: var(--dark-coffee); }
+        .badge--unassigned { background: var(--cream); color: var(--olive-wood); border: 1px solid var(--light-fawn); }
+        .badge--primary { background: var(--dark-coffee); color: var(--cream); }
+        .badge--secondary { background: var(--olive-wood); color: var(--cream); }
+        .badge--yes { background: var(--soft-fawn); color: var(--dark-coffee); }
+        .badge--no { background: var(--cream); color: var(--olive-wood); }
+        .badge--fellow { background: var(--soft-fawn); color: var(--dark-coffee); }
+        .badge--participant { background: var(--cream); color: var(--olive-bark); border: 1px solid var(--light-fawn); }
+
         /* ============================================
            Teams Grid
            ============================================ */
-        .teams-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: var(--space-xl);
-        }
-        
-        .teams-header__title {
-            font-family: var(--font-display);
-            font-size: 1.75rem;
-            font-weight: 400;
-            color: var(--dark-coffee);
-        }
-        
-        .view-toggle {
-            display: flex;
-            border: 1px solid var(--light-fawn);
-        }
-        
+        .teams-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-xl); }
+        .teams-header__title { font-family: var(--font-display); font-size: 1.75rem; font-weight: 400; color: var(--dark-coffee); }
+        .view-toggle { display: flex; border: 1px solid var(--light-fawn); }
         .view-toggle__btn {
-            padding: var(--space-sm) var(--space-lg);
-            background: transparent;
-            border: none;
-            font-family: var(--font-body);
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            color: var(--olive-wood);
-            cursor: pointer;
-            transition: all var(--duration);
+            padding: var(--space-sm) var(--space-lg); background: transparent; border: none;
+            font-family: var(--font-body); font-size: 0.75rem; font-weight: 500;
+            letter-spacing: 0.05em; color: var(--olive-wood); cursor: pointer; transition: all var(--duration);
         }
-        
-        .view-toggle__btn:first-child {
-            border-right: 1px solid var(--light-fawn);
-        }
-        
-        .view-toggle__btn.active {
-            background: var(--dark-coffee);
-            color: var(--cream);
-        }
-        
-        /* Team Cards */
-        .teams-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: var(--space-lg);
-        }
-        
+        .view-toggle__btn:first-child { border-right: 1px solid var(--light-fawn); }
+        .view-toggle__btn.active { background: var(--dark-coffee); color: var(--cream); }
+
+        .teams-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-lg); }
         .team-card {
-            background: var(--warm-white);
-            border: 1px solid var(--light-fawn);
-            cursor: pointer;
-            transition: all var(--duration) var(--ease-out);
-            position: relative;
+            background: var(--warm-white); border: 1px solid var(--light-fawn);
+            cursor: pointer; transition: all var(--duration) var(--ease-out); position: relative;
         }
-        
         .team-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--muted-gold);
-            transform: scaleY(0);
-            transform-origin: bottom;
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--muted-gold); transform: scaleY(0); transform-origin: bottom;
             transition: transform var(--duration) var(--ease-out);
         }
-        
-        .team-card:hover {
-            border-color: var(--muted-gold);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px -20px rgba(53, 34, 8, 0.2);
-        }
-        
-        .team-card:hover::before {
-            transform: scaleY(1);
-        }
-        
-        .team-card--warning::before {
-            background: var(--olive-wood);
-        }
-        
-        .team-card--error::before {
-            background: var(--olive-bark);
-        }
-        
-        .team-card__header {
-            padding: var(--space-lg);
-            border-bottom: 1px solid var(--light-fawn);
-        }
-        
-        .team-card__top {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: var(--space-sm);
-        }
-        
-        .team-card__name {
-            font-family: var(--font-display);
-            font-size: 1.25rem;
-            color: var(--dark-coffee);
-        }
-        
-        .team-card__badge {
-            padding: var(--space-xs) var(--space-sm);
-            font-size: 0.65rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-        
-        .team-card__badge--virtual {
-            background: var(--cream);
-            color: var(--olive-wood);
-            border: 1px solid var(--light-fawn);
-        }
-        
-        .team-card__badge--inperson {
-            background: var(--soft-fawn);
-            color: var(--dark-coffee);
-        }
-        
-        .team-card__schedule {
-            font-size: 0.8rem;
-            color: var(--olive-wood);
-        }
-        
-        .team-card__body {
-            padding: var(--space-lg);
-        }
-        
-        .team-card__grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--space-md);
-            margin-bottom: var(--space-lg);
-        }
-        
-        .team-card__stat {
-            text-align: center;
-            padding: var(--space-md);
-            background: var(--cream);
-        }
-        
-        .team-card__stat-value {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            color: var(--dark-coffee);
-            line-height: 1;
-        }
-        
-        .team-card__stat-label {
-            font-size: 0.6rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--olive-wood);
-            margin-top: var(--space-xs);
-        }
-        
-        .team-card__facilitators {
-            font-size: 0.8rem;
-            color: var(--olive-wood);
-            padding-top: var(--space-md);
-            border-top: 1px solid var(--light-fawn);
-        }
-        
+        .team-card:hover { border-color: var(--muted-gold); transform: translateY(-4px); box-shadow: 0 20px 40px -20px rgba(53, 34, 8, 0.2); }
+        .team-card:hover::before { transform: scaleY(1); }
+        .team-card--warning::before { background: var(--olive-wood); }
+        .team-card--error::before { background: var(--olive-bark); }
+
+        .team-card__header { padding: var(--space-lg); border-bottom: 1px solid var(--light-fawn); }
+        .team-card__top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: var(--space-sm); }
+        .team-card__name { font-family: var(--font-display); font-size: 1.25rem; color: var(--dark-coffee); }
+        .team-card__badge { padding: var(--space-xs) var(--space-sm); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+        .team-card__badge--virtual { background: var(--cream); color: var(--olive-wood); border: 1px solid var(--light-fawn); }
+        .team-card__badge--inperson { background: var(--soft-fawn); color: var(--dark-coffee); }
+        .team-card__schedule { font-size: 0.8rem; color: var(--olive-wood); }
+
+        .team-card__body { padding: var(--space-lg); }
+        .team-card__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); margin-bottom: var(--space-lg); }
+        .team-card__stat { text-align: center; padding: var(--space-md); background: var(--cream); }
+        .team-card__stat-value { font-family: var(--font-display); font-size: 1.5rem; color: var(--dark-coffee); line-height: 1; }
+        .team-card__stat-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--olive-wood); margin-top: var(--space-xs); }
+        .team-card__facilitators { font-size: 0.8rem; color: var(--olive-wood); padding-top: var(--space-md); border-top: 1px solid var(--light-fawn); }
         .team-card__cta {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--space-sm);
-            padding: var(--space-md);
-            background: var(--cream);
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: var(--olive-wood);
-            border-top: 1px solid var(--light-fawn);
-            transition: all var(--duration);
+            display: flex; align-items: center; justify-content: center; gap: var(--space-sm);
+            padding: var(--space-md); background: var(--cream); font-size: 0.75rem; font-weight: 500;
+            color: var(--olive-wood); border-top: 1px solid var(--light-fawn); transition: all var(--duration);
         }
-        
-        .team-card:hover .team-card__cta {
-            background: var(--soft-fawn);
-            color: var(--dark-coffee);
-        }
-        
-        /* Data Table */
+        .team-card:hover .team-card__cta { background: var(--soft-fawn); color: var(--dark-coffee); }
+
+        /* ============================================
+           Data Table
+           ============================================ */
         .data-table-container {
-            display: none;
-            background: var(--warm-white);
-            border: 1px solid var(--light-fawn);
-            margin-top: var(--space-lg);
-            border-radius: 8px;
-            overflow: hidden;
+            display: none; background: var(--warm-white); border: 1px solid var(--light-fawn);
+            margin-top: var(--space-lg); overflow: hidden;
         }
-        
-        .data-table-container.visible {
-            display: block;
+        .data-table-container.visible { display: block; }
+        .table-scroll-wrapper { overflow-x: auto; max-height: 70vh; overflow-y: auto; }
+        .data-table { width: 100%; border-collapse: collapse; min-width: 4000px; }
+        .data-table th, .data-table td {
+            padding: var(--space-sm) var(--space-md); text-align: left;
+            border-bottom: 1px solid var(--light-fawn); font-size: 0.78rem; white-space: nowrap;
         }
-        
-        .table-scroll-wrapper {
-            overflow-x: auto;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-        
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 2800px; /* Wide enough for all columns */
-        }
-        
-        .data-table--full {
-            min-width: 3200px;
-        }
-        
-        .data-table th,
-        .data-table td {
-            padding: var(--space-sm) var(--space-md);
-            text-align: left;
-            border-bottom: 1px solid var(--light-fawn);
-            font-size: 0.8rem;
-            white-space: nowrap;
-        }
-        
         .data-table th {
-            background: var(--dark-coffee);
-            font-size: 0.65rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: var(--soft-fawn);
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            background: var(--dark-coffee); font-size: 0.62rem; font-weight: 600;
+            letter-spacing: 0.05em; text-transform: uppercase; color: var(--soft-fawn);
+            position: sticky; top: 0; z-index: 10;
         }
-        
-        .data-table tr:hover td {
-            background: var(--cream);
-        }
-        
-        .data-table tr:nth-child(even) td {
-            background: rgba(225, 187, 128, 0.05);
-        }
-        
-        .data-table tr:nth-child(even):hover td {
-            background: var(--cream);
-        }
-        
-        /* Sticky first column (Team ID) */
-        .th-sticky,
-        .td-sticky {
-            position: sticky;
-            left: 0;
-            z-index: 5;
-            background: var(--warm-white);
-            border-right: 2px solid var(--light-fawn);
-        }
-        
-        .th-sticky {
-            z-index: 15;
-            background: var(--dark-coffee);
-        }
-        
-        /* Row highlighting */
-        .row-facilitator td {
-            background: rgba(225, 187, 128, 0.15) !important;
-        }
-        
-        .row-facilitator:hover td {
-            background: rgba(225, 187, 128, 0.25) !important;
-        }
-        
-        /* Cell highlighting */
-        .cell-highlight {
-            font-weight: 600;
-            color: var(--dark-coffee);
-        }
-        
-        .cell-conservative {
-            background: rgba(200, 100, 100, 0.15) !important;
-            color: #8b4444;
-            font-weight: 600;
-        }
-        
-        .cell-liberal {
-            background: rgba(100, 100, 200, 0.15) !important;
-            color: #4444a0;
-            font-weight: 600;
-        }
-        
-        .cell-credit {
-            background: rgba(100, 150, 100, 0.15) !important;
-            color: #446644;
-            font-weight: 600;
-        }
-        
+        .data-table tr:hover td { background: var(--cream); }
+        .data-table tr:nth-child(even) td { background: rgba(225, 187, 128, 0.05); }
+        .data-table tr:nth-child(even):hover td { background: var(--cream); }
+        .th-sticky, .td-sticky { position: sticky; left: 0; z-index: 5; background: var(--warm-white); border-right: 2px solid var(--light-fawn); }
+        .th-sticky { z-index: 15; background: var(--dark-coffee); }
+        .row-facilitator td { background: rgba(225, 187, 128, 0.15) !important; }
+        .row-facilitator:hover td { background: rgba(225, 187, 128, 0.25) !important; }
+        .cell-highlight { font-weight: 600; color: var(--dark-coffee); }
+        .cell-conservative { background: rgba(200, 100, 100, 0.15) !important; color: #8b4444; font-weight: 600; }
+        .cell-liberal { background: rgba(100, 100, 200, 0.15) !important; color: #4444a0; font-weight: 600; }
+        .cell-credit { background: rgba(100, 150, 100, 0.15) !important; color: #446644; font-weight: 600; }
+
         /* ============================================
            Friend Pairs Section
            ============================================ */
-        .friend-pairs-section {
-            margin-top: var(--space-3xl);
-            padding-top: var(--space-3xl);
-            border-top: 1px solid var(--light-fawn);
-            display: none;
-        }
-        
-        .friend-pairs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: var(--space-md);
-            margin-top: var(--space-xl);
-        }
-        
-        .friend-pair {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-            padding: var(--space-md) var(--space-lg);
-            background: var(--cream);
-            border: 1px solid var(--light-fawn);
-            font-size: 0.8rem;
-        }
-        
-        .friend-pair__icon {
-            width: 20px;
-            height: 20px;
-            color: var(--muted-gold);
-        }
-        
-        .friend-pair--unsatisfied {
-            background: var(--warm-white);
-        }
-        
-        .friend-pair--unsatisfied .friend-pair__icon {
-            color: var(--olive-wood);
-        }
-        
+        .friend-pairs-section { margin-top: var(--space-3xl); padding-top: var(--space-3xl); border-top: 1px solid var(--light-fawn); display: none; }
+        .friend-pairs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-md); margin-top: var(--space-xl); }
+        .friend-pair { display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md) var(--space-lg); background: var(--cream); border: 1px solid var(--light-fawn); font-size: 0.8rem; }
+        .friend-pair__icon { width: 20px; height: 20px; color: var(--muted-gold); }
+        .friend-pair--unsatisfied { background: var(--warm-white); }
+        .friend-pair--unsatisfied .friend-pair__icon { color: var(--olive-wood); }
+
         /* ============================================
            Modal
            ============================================ */
         .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(53, 34, 8, 0.8);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all var(--duration);
-            padding: var(--space-xl);
+            position: fixed; inset: 0; background: rgba(53, 34, 8, 0.8);
+            backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
+            z-index: 1000; opacity: 0; visibility: hidden; transition: all var(--duration); padding: var(--space-xl);
         }
-        
-        .modal-overlay.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-        
+        .modal-overlay.visible { opacity: 1; visibility: visible; }
         .modal {
-            background: var(--warm-white);
-            width: 100%;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow: hidden;
-            position: relative;
-            transform: translateY(20px);
+            background: var(--warm-white); width: 100%; max-width: 900px; max-height: 90vh;
+            overflow: hidden; position: relative; transform: translateY(20px);
             transition: transform var(--duration) var(--ease-out);
         }
-        
-        .modal-overlay.visible .modal {
-            transform: translateY(0);
-        }
-        
-        /* Modal geometric accents */
-        .modal::before,
-        .modal::after {
-            content: '';
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            border: 1px solid var(--muted-gold);
-            pointer-events: none;
-        }
-        
-        .modal::before {
-            top: -1px;
-            left: -1px;
-            border-right: none;
-            border-bottom: none;
-        }
-        
-        .modal::after {
-            bottom: -1px;
-            right: -1px;
-            border-left: none;
-            border-top: none;
-        }
-        
+        .modal-overlay.visible .modal { transform: translateY(0); }
+        .modal::before, .modal::after { content: ''; position: absolute; width: 60px; height: 60px; border: 1px solid var(--muted-gold); pointer-events: none; }
+        .modal::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+        .modal::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+        .modal--wide { max-width: 1100px; width: 95%; }
+
         .modal__header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: var(--space-xl) var(--space-2xl);
-            border-bottom: 1px solid var(--light-fawn);
-            background: var(--cream);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: var(--space-xl) var(--space-2xl); border-bottom: 1px solid var(--light-fawn); background: var(--cream);
         }
-        
-        .modal__title {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            color: var(--dark-coffee);
-        }
-        
-        .modal__subtitle {
-            font-size: 0.8rem;
-            color: var(--olive-wood);
-            margin-top: var(--space-xs);
-        }
-        
+        .modal__title { font-family: var(--font-display); font-size: 1.5rem; color: var(--dark-coffee); }
+        .modal__subtitle { font-size: 0.8rem; color: var(--olive-wood); margin-top: var(--space-xs); }
         .modal__close {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            border: 1px solid var(--light-fawn);
-            color: var(--olive-wood);
-            cursor: pointer;
-            transition: all var(--duration);
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+            background: transparent; border: 1px solid var(--light-fawn); color: var(--olive-wood);
+            cursor: pointer; transition: all var(--duration);
         }
-        
-        .modal__close:hover {
-            background: var(--dark-coffee);
-            border-color: var(--dark-coffee);
-            color: var(--cream);
-        }
-        
-        .modal__body {
-            padding: var(--space-2xl);
-            overflow-y: auto;
-            max-height: calc(90vh - 100px);
-        }
-        
-        /* Modal Info Grid */
+        .modal__close:hover { background: var(--dark-coffee); border-color: var(--dark-coffee); color: var(--cream); }
+        .modal__body { padding: var(--space-2xl); overflow-y: auto; max-height: calc(90vh - 100px); }
+
         .modal-info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 1px;
-            background: var(--light-fawn);
-            border: 1px solid var(--light-fawn);
-            margin-bottom: var(--space-2xl);
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1px; background: var(--light-fawn); border: 1px solid var(--light-fawn); margin-bottom: var(--space-2xl);
         }
-        
-        .modal-info-item {
-            background: var(--warm-white);
-            padding: var(--space-lg);
-            text-align: center;
-        }
-        
-        .modal-info-item__value {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            color: var(--dark-coffee);
-        }
-        
-        .modal-info-item__label {
-            font-size: 0.6rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--olive-wood);
-            margin-top: var(--space-xs);
-        }
-        
-        /* Members Table */
-        .modal-section-title {
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-            margin-bottom: var(--space-lg);
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            color: var(--dark-coffee);
-        }
-        
-        .members-table {
-            width: 100%;
-            border-collapse: collapse;
-            border: 1px solid var(--light-fawn);
-        }
-        
-        .members-table th,
-        .members-table td {
-            padding: var(--space-md) var(--space-lg);
-            text-align: left;
-            border-bottom: 1px solid var(--light-fawn);
-            font-size: 0.8rem;
-        }
-        
-        .members-table th {
-            background: var(--cream);
-            font-size: 0.65rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--olive-wood);
-        }
-        
-        .members-table tr:hover td {
-            background: var(--cream);
-        }
-        
-        .member-id {
-            font-family: var(--font-display);
-            font-weight: 500;
-            color: var(--dark-coffee);
-        }
-        
-        .member-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-        }
-        
-        .member-badge--facilitator {
-            background: var(--soft-fawn);
-            color: var(--dark-coffee);
-        }
-        
-        .member-badge--student {
-            background: var(--cream);
-            color: var(--olive-bark);
-            border: 1px solid var(--light-fawn);
-        }
-        
-        .member-badge--non-student {
-            background: var(--olive-wood);
-            color: var(--cream);
-        }
-        
-        .member-tag {
-            display: inline-block;
-            padding: 2px 6px;
-            font-size: 0.65rem;
-            background: var(--cream);
-            color: var(--olive-wood);
-            border: 1px solid var(--light-fawn);
-        }
-        
-        /* Wide Modal for detailed view */
-        .modal--wide {
-            max-width: 1000px;
-            width: 95%;
-        }
-        
-        /* Member Cards Grid */
-        .members-cards {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-lg);
-        }
-        
-        .member-card {
-            background: var(--warm-white);
-            border: 1px solid var(--light-fawn);
-            border-radius: 0;
-            overflow: hidden;
-        }
-        
-        .member-card--facilitator {
-            border-left: 3px solid var(--soft-fawn);
-        }
-        
-        .member-card__header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: var(--space-md) var(--space-lg);
-            background: var(--cream);
-            border-bottom: 1px solid var(--light-fawn);
-        }
-        
-        .member-card__id {
-            font-family: var(--font-display);
-            font-size: 1.1rem;
-            color: var(--dark-coffee);
-        }
-        
-        .member-card__badges {
-            display: flex;
-            gap: var(--space-sm);
-            flex-wrap: wrap;
-        }
-        
-        .member-card__body {
-            padding: var(--space-lg);
-        }
-        
-        .member-card__grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--space-lg);
-        }
-        
-        .member-card__section {
-            min-width: 0;
-        }
-        
-        .member-card__section-title {
-            font-size: 0.6rem;
-            font-weight: 600;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--olive-wood);
-            margin-bottom: var(--space-sm);
-            padding-bottom: var(--space-xs);
-            border-bottom: 1px solid var(--light-fawn);
-        }
-        
-        .member-card__row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            padding: var(--space-xs) 0;
-            font-size: 0.8rem;
-        }
-        
-        .member-card__label {
-            color: var(--olive-wood);
-            font-size: 0.7rem;
-        }
-        
-        .member-card__value {
-            color: var(--dark-coffee);
-            font-weight: 500;
-            text-align: right;
-        }
-        
-        .member-card__value--highlight {
-            color: var(--olive-bark);
-            background: var(--soft-fawn);
-            padding: 2px 8px;
-        }
-        
-        .member-card__value--credit {
-            color: var(--dark-coffee);
-            background: rgba(123, 107, 67, 0.15);
-            padding: 2px 8px;
-            font-weight: 600;
-        }
-        
-        .member-card__tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: var(--space-xs);
-            margin-top: var(--space-xs);
-        }
-        
-        .member-tag--small {
-            font-size: 0.6rem;
-            padding: 2px 6px;
-        }
-        
-        .member-tag--race {
-            background: var(--cream);
-            border: 1px solid var(--light-fawn);
-        }
-        
-        .member-tag--course {
-            background: rgba(123, 107, 67, 0.15);
-            color: var(--olive-bark);
-            font-weight: 600;
-        }
-        
-        /* Violations in Modal */
-        .modal-violations {
-            margin-top: var(--space-xl);
-            padding: var(--space-lg);
-            background: var(--cream);
-            border-left: 3px solid var(--muted-gold);
-        }
-        
-        .modal-violations__title {
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--olive-wood);
-            margin-bottom: var(--space-sm);
-        }
-        
-        .modal-violations ul {
-            margin: 0;
-            padding-left: var(--space-lg);
-            font-size: 0.8rem;
-            color: var(--olive-bark);
-        }
-        
+        .modal-info-item { background: var(--warm-white); padding: var(--space-lg); text-align: center; }
+        .modal-info-item__value { font-family: var(--font-display); font-size: 1.5rem; color: var(--dark-coffee); }
+        .modal-info-item__label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--olive-wood); margin-top: var(--space-xs); }
+
+        .modal-section-title { display: flex; align-items: center; gap: var(--space-md); margin-bottom: var(--space-lg); font-family: var(--font-display); font-size: 1.1rem; color: var(--dark-coffee); }
+
+        /* Member Cards */
+        .members-cards { display: flex; flex-direction: column; gap: var(--space-lg); }
+        .member-card { background: var(--warm-white); border: 1px solid var(--light-fawn); overflow: hidden; }
+        .member-card--facilitator { border-left: 3px solid var(--soft-fawn); }
+        .member-card__header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-md) var(--space-lg); background: var(--cream); border-bottom: 1px solid var(--light-fawn); }
+        .member-card__id { font-family: var(--font-display); font-size: 1.1rem; color: var(--dark-coffee); }
+        .member-card__badges { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
+        .member-card__body { padding: var(--space-lg); }
+        .member-card__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); }
+        .member-card__section { min-width: 0; }
+        .member-card__section-title { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--olive-wood); margin-bottom: var(--space-sm); padding-bottom: var(--space-xs); border-bottom: 1px solid var(--light-fawn); }
+        .member-card__row { display: flex; justify-content: space-between; align-items: baseline; padding: var(--space-xs) 0; font-size: 0.8rem; }
+        .member-card__label { color: var(--olive-wood); font-size: 0.7rem; }
+        .member-card__value { color: var(--dark-coffee); font-weight: 500; text-align: right; }
+        .member-card__value--highlight { color: var(--olive-bark); background: var(--soft-fawn); padding: 2px 8px; }
+        .member-card__value--credit { color: var(--dark-coffee); background: rgba(123, 107, 67, 0.15); padding: 2px 8px; font-weight: 600; }
+        .member-card__tags { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-top: var(--space-xs); }
+        .member-tag { display: inline-block; padding: 2px 6px; font-size: 0.65rem; background: var(--cream); color: var(--olive-wood); border: 1px solid var(--light-fawn); }
+        .member-tag--small { font-size: 0.6rem; padding: 2px 6px; }
+        .member-tag--race { background: var(--cream); border: 1px solid var(--light-fawn); }
+        .member-tag--course { background: rgba(123, 107, 67, 0.15); color: var(--olive-bark); font-weight: 600; }
+
+        .modal-violations { margin-top: var(--space-xl); padding: var(--space-lg); background: var(--cream); border-left: 3px solid var(--muted-gold); }
+        .modal-violations__title { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--olive-wood); margin-bottom: var(--space-sm); }
+        .modal-violations ul { margin: 0; padding-left: var(--space-lg); font-size: 0.8rem; color: var(--olive-bark); }
+
         /* ============================================
-           Loading Overlay
+           Loading
            ============================================ */
         .loading-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(53, 34, 8, 0.95);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all var(--duration);
+            position: fixed; inset: 0; background: rgba(53, 34, 8, 0.95);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 2000; opacity: 0; visibility: hidden; transition: all var(--duration);
         }
-        
-        .loading-overlay.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .loader {
-            width: 60px;
-            height: 60px;
-            border: 2px solid transparent;
-            border-top-color: var(--soft-fawn);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: var(--space-xl);
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .loading-overlay__text {
-            font-family: var(--font-display);
-            font-size: 1.25rem;
-            color: var(--cream);
-            margin-bottom: var(--space-sm);
-        }
-        
-        .loading-overlay__subtext {
-            font-size: 0.875rem;
-            color: var(--muted-gold);
-        }
-        
+        .loading-overlay.visible { opacity: 1; visibility: visible; }
+        .loader { width: 60px; height: 60px; border: 2px solid transparent; border-top-color: var(--soft-fawn); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: var(--space-xl); }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-overlay__text { font-family: var(--font-display); font-size: 1.25rem; color: var(--cream); margin-bottom: var(--space-sm); }
+        .loading-overlay__subtext { font-size: 0.875rem; color: var(--muted-gold); }
+
         /* ============================================
            Footer
            ============================================ */
-        .footer {
-            padding: var(--space-xl) 0;
-            border-top: 1px solid var(--light-fawn);
-            text-align: center;
-        }
-        
-        .footer__text {
-            font-size: 0.75rem;
-            color: var(--olive-wood);
-            letter-spacing: 0.05em;
-        }
-        
+        .footer { padding: var(--space-xl) 0; border-top: 1px solid var(--light-fawn); text-align: center; }
+        .footer__text { font-size: 0.75rem; color: var(--olive-wood); letter-spacing: 0.05em; }
+
         /* ============================================
            Animations
            ============================================ */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .fade-up {
-            animation: fadeUp 0.5s var(--ease-out) forwards;
-        }
-        
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-up { animation: fadeUp 0.5s var(--ease-out) forwards; }
+
         /* ============================================
            Responsive
            ============================================ */
         @media (max-width: 768px) {
-            .hero {
-                padding: var(--space-lg) 0;
-            }
-            
-            .hero__title {
-                font-size: 1.5rem;
-            }
-            
-            .container {
-                padding: 0 var(--space-lg);
-            }
-            
-            .upload-card {
-                padding: var(--space-xl);
-            }
-            
-            .stats-row {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .teams-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .modal {
-                margin: var(--space-md);
-            }
-            
-            .modal__body {
-                padding: var(--space-lg);
-            }
+            .hero { padding: var(--space-lg) 0; }
+            .hero__title { font-size: 1.5rem; }
+            .container { padding: 0 var(--space-lg); }
+            .upload-card { padding: var(--space-xl); }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .teams-grid { grid-template-columns: 1fr; }
+            .modal { margin: var(--space-md); }
+            .modal__body { padding: var(--space-lg); }
+            .analytics-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -1400,7 +522,6 @@
             <div class="hero__circle hero__circle--1"></div>
             <div class="hero__circle hero__circle--2"></div>
             <div class="hero__circle hero__circle--3"></div>
-            
             <div class="container">
                 <div class="hero__content">
                     <h1 class="hero__title">D-Team <span>Formation</span></h1>
@@ -1410,7 +531,7 @@
         
         <!-- Main Content -->
         <main class="main">
-            <div class="container">
+            <div class="container container--wide">
                 <!-- Upload Section -->
                 <section class="upload-section">
                     <div class="section-label">
@@ -1425,12 +546,10 @@
                                 <polyline points="17 8 12 3 7 8"/>
                                 <line x1="12" y1="3" x2="12" y2="15"/>
                             </svg>
-                            <p class="upload-zone__title">Drop your Excel file here</p>
-                            <p class="upload-zone__hint">or click to browse your files</p>
-                            <button type="button" class="upload-zone__btn" id="browse-btn">
-                                Select File
-                            </button>
-                            <input type="file" id="file-input" accept=".xlsx,.xls">
+                            <p class="upload-zone__title">Drop your data file here</p>
+                            <p class="upload-zone__hint">Supports Excel (.xlsx/.xls) and CSV (.csv) files</p>
+                            <button type="button" class="upload-zone__btn" id="browse-btn">Select File</button>
+                            <input type="file" id="file-input" accept=".xlsx,.xls,.csv">
                         </div>
                         
                         <div class="file-selected" id="file-selected">
@@ -1487,7 +606,6 @@
                         <span class="section-label__text">Results Overview</span>
                         <span class="section-label__line"></span>
                     </div>
-                    
                     <div class="stats-row" id="stats-row"></div>
                     
                     <!-- Download Bar -->
@@ -1512,8 +630,47 @@
                             </button>
                         </div>
                     </div>
+
+                    <!-- ========== TEAM ANALYTICS DASHBOARD ========== -->
+                    <div class="analytics-section" id="analytics-section" style="display:none;">
+                        <div class="section-label">
+                            <span class="section-label__text">Team Analytics</span>
+                            <span class="section-label__line"></span>
+                        </div>
+                        <div class="analytics-grid" id="analytics-grid"></div>
+                    </div>
+
+                    <!-- ========== FACILITATOR ANALYTICS ========== -->
+                    <div class="facilitator-section" id="facilitator-section" style="display:none;">
+                        <div class="section-label">
+                            <span class="section-label__text">DCI Fellow / Facilitator Analytics</span>
+                            <span class="section-label__line"></span>
+                        </div>
+                        <div class="facilitator-stats" id="facilitator-stats"></div>
+                        <div class="fellows-table-container">
+                            <div class="fellows-table-scroll">
+                                <table class="fellows-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Fellow ID</th>
+                                            <th>Category</th>
+                                            <th>Status</th>
+                                            <th>Ideology</th>
+                                            <th>Year</th>
+                                            <th>Primary Teams</th>
+                                            <th>Secondary Teams</th>
+                                            <th>Total Assigned</th>
+                                            <th>Online Last Sem.</th>
+                                            <th>Not Primary Last Sem.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="fellows-table-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                     
-                    <!-- Teams -->
+                    <!-- ========== TEAM ASSIGNMENTS ========== -->
                     <div class="section-label">
                         <span class="section-label__text">Team Assignments</span>
                         <span class="section-label__line"></span>
@@ -1531,14 +688,16 @@
                     
                     <div class="data-table-container" id="teams-table-container">
                         <div class="table-scroll-wrapper">
-                            <table class="data-table data-table--full">
+                            <table class="data-table">
                                 <thead>
                                     <tr>
-                                        <!-- Team Assignment -->
                                         <th class="th-sticky">Team</th>
                                         <th>Day</th>
                                         <th>Time</th>
                                         <th>Format</th>
+                                        <th>Round</th>
+                                        <th>Is Fellow</th>
+                                        <th>Fac. Role</th>
                                         <th>Role</th>
                                         <!-- Identification -->
                                         <th>ID</th>
@@ -1550,34 +709,37 @@
                                         <th>Faculty?</th>
                                         <th>Staff?</th>
                                         <th>Alum?</th>
+                                        <!-- Source -->
+                                        <th>Source / How Heard</th>
                                         <!-- Demographics -->
                                         <th>Year/Class</th>
                                         <th>Age Range</th>
                                         <th>Gender</th>
                                         <th>Race/Ethnicity</th>
+                                        <th>Race (Binary)</th>
                                         <!-- Political -->
                                         <th>Ideology</th>
                                         <th>Conservative?</th>
                                         <th>Liberal?</th>
                                         <th>Moderate?</th>
                                         <!-- Issue Positions -->
-                                        <th>Immigration Position</th>
-                                        <th>Imm. Agree?</th>
-                                        <th>Imm. Disagree?</th>
-                                        <th>Presidency Position</th>
-                                        <th>Pres. Agree?</th>
-                                        <th>Pres. Disagree?</th>
+                                        <th>Pro Liberty Position</th>
+                                        <th>Pro Liberty Code</th>
+                                        <th>Pro Rule of Law Position</th>
+                                        <th>Pro Rule Code</th>
                                         <!-- Format & Availability -->
-                                        <th>Format Pref</th>
-                                        <th>Avail. Slots</th>
+                                        <th>Format Preference</th>
+                                        <th>Rounds Preference</th>
+                                        <th>Available Slots</th>
+                                        <th>If-Necessary Slots</th>
                                         <!-- Course Credit -->
                                         <th>For Credit?</th>
                                         <th>Courses</th>
-                                        <!-- Connection -->
-                                        <th>How Heard</th>
                                         <!-- Friend Info -->
                                         <th>Friend Invited</th>
+                                        <th>Friend Name</th>
                                         <th>Invited By</th>
+                                        <th>Invited By Name</th>
                                     </tr>
                                 </thead>
                                 <tbody id="teams-table-body"></tbody>
@@ -1588,7 +750,7 @@
                     <!-- Friend Pairs -->
                     <div class="friend-pairs-section" id="friend-pairs-section">
                         <div class="section-label">
-                            <span class="section-label__text">Friend Pairs</span>
+                            <span class="section-label__text">Friend Pairs (Mutual Consent)</span>
                             <span class="section-label__line"></span>
                         </div>
                         <div class="friend-pairs-grid" id="friend-pairs-grid"></div>
@@ -1629,13 +791,8 @@
             </div>
             <div class="modal__body">
                 <div class="modal-info-grid" id="modal-info-grid"></div>
-                
-                <h3 class="modal-section-title">
-                    Team Members · <span id="modal-member-count">0</span>
-                </h3>
-                
+                <h3 class="modal-section-title">Team Members · <span id="modal-member-count">0</span></h3>
                 <div class="members-cards" id="modal-members-cards"></div>
-                
                 <div class="modal-violations" id="modal-violations" style="display: none;"></div>
             </div>
         </div>
@@ -1648,6 +805,7 @@
         let currentSolutionId = null;
         let selectedFile = null;
         let teamsData = [];
+        let fullResponseData = null;
         
         // ============================================
         // Elements
@@ -1671,14 +829,8 @@
         // ============================================
         // Event Listeners
         // ============================================
-        
-        browseBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            fileInput.click();
-        });
-        
+        browseBtn.addEventListener('click', (e) => { e.stopPropagation(); fileInput.click(); });
         uploadZone.addEventListener('click', () => fileInput.click());
-        
         fileInput.addEventListener('change', handleFileSelect);
         
         fileRemove.addEventListener('click', () => {
@@ -1689,15 +841,8 @@
             runBtn.disabled = true;
         });
         
-        uploadZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadZone.classList.add('dragover');
-        });
-        
-        uploadZone.addEventListener('dragleave', () => {
-            uploadZone.classList.remove('dragover');
-        });
-        
+        uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+        uploadZone.addEventListener('dragleave', () => { uploadZone.classList.remove('dragover'); });
         uploadZone.addEventListener('drop', (e) => {
             e.preventDefault();
             uploadZone.classList.remove('dragover');
@@ -1712,7 +857,6 @@
         $('#download-excel').addEventListener('click', () => {
             if (currentSolutionId) window.location.href = `/download/${currentSolutionId}/excel`;
         });
-        
         $('#download-csv').addEventListener('click', () => {
             if (currentSolutionId) window.location.href = `/download/${currentSolutionId}/csv`;
         });
@@ -1728,17 +872,12 @@
         });
         
         modalClose.addEventListener('click', closeModal);
-        teamModal.addEventListener('click', (e) => {
-            if (e.target === teamModal) closeModal();
-        });
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
+        teamModal.addEventListener('click', (e) => { if (e.target === teamModal) closeModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
         
         // ============================================
         // Functions
         // ============================================
-        
         function handleFileSelect() {
             const file = fileInput.files[0];
             if (file) {
@@ -1752,7 +891,6 @@
         
         async function runSolver() {
             if (!selectedFile) return;
-            
             loadingOverlay.classList.add('visible');
             
             const formData = new FormData();
@@ -1763,15 +901,11 @@
             formData.append('allow_flexible', $('#allow-flexible').checked);
             
             try {
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-                
+                const response = await fetch('/upload', { method: 'POST', body: formData });
                 const data = await response.json();
-                
                 if (response.ok) {
                     currentSolutionId = data.solution_id;
+                    fullResponseData = data;
                     displayResults(data);
                 } else {
                     alert(`Error: ${data.error}`);
@@ -1783,14 +917,54 @@
             }
         }
         
+        // ============================================
+        // Helper: Gender display
+        // ============================================
+        function genderDisplay(m) {
+            if (m.gender && m.gender !== '') return m.gender;
+            if (m.is_female) return 'Female';
+            if (m.is_male) return 'Male';
+            if (m.is_nonbinary) return 'Non-binary';
+            if (m.is_trans) return 'Trans';
+            if (m.prefer_not_say_gender) return 'Prefer not to say';
+            return '—';
+        }
+        
+        // Helper: Race display
+        function raceDisplay(m) {
+            if (m.races && m.races.length > 0) return m.races.join(', ');
+            if (m.is_white) return 'White';
+            if (m.is_nonwhite) return 'Non-White';
+            return '—';
+        }
+        
+        // Helper: Ideology display
+        function ideologyDisplay(m) {
+            if (m.ideology && m.ideology !== '') return m.ideology;
+            if (m.is_conservative) return 'Conservative';
+            if (m.is_liberal) return 'Liberal';
+            if (m.is_moderate) return 'Moderate';
+            return '—';
+        }
+        
+        // Helper: Race binary display
+        function raceBinaryDisplay(m) {
+            const rb = m.race_binary;
+            if (rb === 1) return 'White';
+            if (rb === 2) return 'Non-White';
+            return '—';
+        }
+        
+        // ============================================
+        // Display Results
+        // ============================================
         function displayResults(data) {
             resultsSection.classList.add('visible');
             teamsData = data.teams;
-            
             const stats = data.statistics;
             
-            // Stats
-            $('#stats-row').innerHTML = `
+            // ---------- Stats Row ----------
+            let statsHtml = `
                 <div class="stat-card fade-up">
                     <div class="stat-card__value">${stats.teams_formed}</div>
                     <div class="stat-card__label">Teams</div>
@@ -1808,9 +982,39 @@
                     <div class="stat-card__label">Friend Pairs</div>
                 </div>
             `;
+            if (stats.total_fellows !== undefined) {
+                statsHtml += `
+                    <div class="stat-card fade-up" style="animation-delay: 0.4s">
+                        <div class="stat-card__value">${stats.total_fellows}</div>
+                        <div class="stat-card__label">Fellows</div>
+                    </div>
+                    <div class="stat-card fade-up" style="animation-delay: 0.5s">
+                        <div class="stat-card__value">${stats.fellows_assigned || 0}</div>
+                        <div class="stat-card__label">Fellows Placed</div>
+                    </div>
+                `;
+            }
+            if (stats.unassigned > 0) {
+                statsHtml += `
+                    <div class="stat-card fade-up" style="animation-delay: 0.6s">
+                        <div class="stat-card__value">${stats.unassigned}</div>
+                        <div class="stat-card__label">Unassigned</div>
+                    </div>
+                `;
+            }
+            $('#stats-row').innerHTML = statsHtml;
             
-            // Teams Grid
-            $('#teams-grid').innerHTML = data.teams.map((team, i) => `
+            // ---------- Team Analytics Dashboard ----------
+            displayTeamAnalytics(data.team_analytics);
+            
+            // ---------- Facilitator Analytics ----------
+            displayFacilitatorAnalytics(data.facilitator_analytics);
+            
+            // ---------- Teams Grid (Cards) ----------
+            $('#teams-grid').innerHTML = data.teams.map((team, i) => {
+                const pfLabel = team.primary_facilitator ? `#${team.primary_facilitator.id}` : '—';
+                const sfLabel = team.secondary_facilitator ? `#${team.secondary_facilitator.id}` : '—';
+                return `
                 <div class="team-card team-card--${team.status} fade-up" style="animation-delay: ${0.05 * i}s" onclick="openTeamModal(${i})">
                     <div class="team-card__header">
                         <div class="team-card__top">
@@ -1819,7 +1023,7 @@
                                 ${team.format}
                             </span>
                         </div>
-                        <div class="team-card__schedule">${team.day} · ${team.time}</div>
+                        <div class="team-card__schedule">${team.day} · ${team.time} · ${team.round_name || 'Both Rounds'}</div>
                     </div>
                     <div class="team-card__body">
                         <div class="team-card__grid">
@@ -1837,124 +1041,32 @@
                             </div>
                         </div>
                         <div class="team-card__facilitators">
-                            Facilitators: #${team.primary_facilitator || '—'} · #${team.secondary_facilitator || '—'}
+                            <strong>Primary:</strong> ${pfLabel} · <strong>Secondary:</strong> ${sfLabel}
                         </div>
                     </div>
-                    <div class="team-card__cta">
-                        View ${team.size} members →
-                    </div>
+                    <div class="team-card__cta">View ${team.size} members →</div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
             
-            // Teams Table - Comprehensive view with ALL participant data
-            let tableRows = [];
-            data.teams.forEach(team => {
-                team.members.forEach(m => {
-                    // Determine role
-                    let role = '';
-                    if (m.id === team.primary_facilitator) role = 'Primary Facilitator';
-                    else if (m.id === team.secondary_facilitator) role = 'Secondary Facilitator';
-                    
-                    // Gender display
-                    let gender = '—';
-                    if (m.is_female) gender = 'Female';
-                    else if (m.is_male) gender = 'Male';
-                    else if (m.is_nonbinary) gender = 'Nonbinary';
-                    else if (m.is_trans) gender = 'Trans';
-                    else if (m.prefer_not_say_gender) gender = 'Prefer not to say';
-                    
-                    // Race display
-                    let race = '—';
-                    if (m.races && m.races.length > 0) {
-                        race = m.races.join(', ');
-                    } else if (m.is_white) {
-                        race = 'White';
-                    } else if (m.is_nonwhite) {
-                        race = 'Non-White';
-                    }
-                    
-                    // Courses display
-                    let courses = '—';
-                    if (m.courses && m.courses.length > 0) {
-                        courses = m.courses.join(', ');
-                    }
-                    
-                    // Format preference display
-                    let formatPref = 'Either';
-                    if (m.format_pref === 'P') formatPref = 'In-Person Only';
-                    else if (m.format_pref === 'Z') formatPref = 'Virtual Only';
-                    
-                    tableRows.push(`
-                        <tr class="${role ? 'row-facilitator' : ''}">
-                            <!-- Team Assignment -->
-                            <td class="td-sticky"><strong>${team.id}</strong></td>
-                            <td>${team.day}</td>
-                            <td>${team.time}</td>
-                            <td>${team.format}</td>
-                            <td class="${role ? 'cell-highlight' : ''}">${role || '—'}</td>
-                            <!-- Identification -->
-                            <td><strong>#${m.id}</strong></td>
-                            <td>${m.status || '—'}</td>
-                            <td>${m.date_submitted || '—'}</td>
-                            <!-- Category -->
-                            <td>${m.category || '—'}</td>
-                            <td>${m.is_student ? '✓' : '—'}</td>
-                            <td>${m.is_faculty ? '✓' : '—'}</td>
-                            <td>${m.is_staff ? '✓' : '—'}</td>
-                            <td>${m.is_alum ? '✓' : '—'}</td>
-                            <!-- Demographics -->
-                            <td>${m.year || '—'}</td>
-                            <td>${m.age_range || '—'}</td>
-                            <td>${gender}</td>
-                            <td>${race}</td>
-                            <!-- Political -->
-                            <td>${m.ideology || '—'}</td>
-                            <td class="${m.is_conservative ? 'cell-conservative' : ''}">${m.is_conservative ? '✓' : '—'}</td>
-                            <td class="${m.is_liberal ? 'cell-liberal' : ''}">${m.is_liberal ? '✓' : '—'}</td>
-                            <td>${m.is_moderate ? '✓' : '—'}</td>
-                            <!-- Issue Positions -->
-                            <td>${m.issue1_position || '—'}</td>
-                            <td>${m.issue1_agree ? '✓' : '—'}</td>
-                            <td>${m.issue1_disagree ? '✓' : '—'}</td>
-                            <td>${m.issue2_position || '—'}</td>
-                            <td>${m.issue2_agree ? '✓' : '—'}</td>
-                            <td>${m.issue2_disagree ? '✓' : '—'}</td>
-                            <!-- Format & Availability -->
-                            <td>${formatPref}</td>
-                            <td>${m.total_available || '—'}</td>
-                            <!-- Course Credit -->
-                            <td class="${m.taking_for_credit ? 'cell-credit' : ''}">${m.taking_for_credit ? '✓ Yes' : 'No'}</td>
-                            <td>${courses}</td>
-                            <!-- Connection -->
-                            <td>${m.connection || '—'}</td>
-                            <!-- Friend Info -->
-                            <td>${m.friend_invited ? '#' + m.friend_invited : '—'}</td>
-                            <td>${m.friend_invited_by ? '#' + m.friend_invited_by : '—'}</td>
-                        </tr>
-                    `);
-                });
-            });
-            $('#teams-table-body').innerHTML = tableRows.join('');
+            // ---------- Data Table (All participants with ALL columns) ----------
+            buildDataTable(data);
             
-            // Friend Pairs
+            // ---------- Friend Pairs ----------
             const friendSection = $('#friend-pairs-section');
             if (data.friend_pairs_satisfied.length > 0 || data.friend_pairs_unsatisfied.length > 0) {
                 friendSection.style.display = 'block';
-                
                 $('#friend-pairs-grid').innerHTML = 
                     data.friend_pairs_satisfied.map(p => `
                         <div class="friend-pair">
-                            <svg class="friend-pair__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 6L9 17l-5-5"/>
-                            </svg>
+                            <svg class="friend-pair__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
                             <span>#${p.p1} & #${p.p2} → ${p.team}</span>
                         </div>
                     `).join('') +
                     data.friend_pairs_unsatisfied.map(p => `
                         <div class="friend-pair friend-pair--unsatisfied">
                             <svg class="friend-pair__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="18" y1="6" x2="6" y2="18"/>
-                                <line x1="6" y1="6" x2="18" y2="18"/>
+                                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                             </svg>
                             <span>#${p.p1} & #${p.p2}</span>
                         </div>
@@ -1966,82 +1078,387 @@
             resultsSection.scrollIntoView({ behavior: 'smooth' });
         }
         
+        // ============================================
+        // Team Analytics Dashboard
+        // ============================================
+        function displayTeamAnalytics(analytics) {
+            const section = $('#analytics-section');
+            if (!analytics || Object.keys(analytics).length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+            section.style.display = 'block';
+            
+            // Build team analytics cards
+            let html = '';
+            
+            // Card 1: Team Size Overview
+            html += `
+            <div class="analytics-card fade-up">
+                <div class="analytics-card__title">Team Size Overview</div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">Total Teams</span>
+                    <span class="analytics-row__value">${analytics.total_teams}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">Average Size</span>
+                    <span class="analytics-row__value">${analytics.avg_team_size}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">Min Size</span>
+                    <span class="analytics-row__value">${analytics.min_team_size}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">Max Size</span>
+                    <span class="analytics-row__value">${analytics.max_team_size}</span>
+                </div>
+                <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--light-fawn);">
+                    <div class="analytics-row">
+                        <span class="analytics-row__label">Virtual Teams</span>
+                        <span class="analytics-row__value">${analytics.virtual_teams}</span>
+                    </div>
+                    <div class="analytics-row">
+                        <span class="analytics-row__label">In-Person Teams</span>
+                        <span class="analytics-row__value">${analytics.inperson_teams}</span>
+                    </div>
+                </div>
+            </div>`;
+            
+            // Card 2: Size Distribution
+            const sizeDist = analytics.size_distribution || {};
+            const maxSizeCount = Math.max(...Object.values(sizeDist), 1);
+            html += `
+            <div class="analytics-card fade-up" style="animation-delay: 0.1s">
+                <div class="analytics-card__title">Size Distribution</div>
+                ${Object.entries(sizeDist).sort((a,b) => parseInt(a[0]) - parseInt(b[0])).map(([size, count]) => `
+                    <div class="analytics-bar">
+                        <span class="analytics-bar__label">${size} members</span>
+                        <div class="analytics-bar__track">
+                            <div class="analytics-bar__fill" style="width: ${(count / maxSizeCount * 100).toFixed(0)}%"></div>
+                        </div>
+                        <span class="analytics-bar__value">${count}</span>
+                    </div>
+                `).join('')}
+            </div>`;
+            
+            // Card 3: Teams by Day
+            const dayDist = analytics.teams_by_day || {};
+            const maxDayCount = Math.max(...Object.values(dayDist), 1);
+            html += `
+            <div class="analytics-card fade-up" style="animation-delay: 0.2s">
+                <div class="analytics-card__title">Teams by Day</div>
+                ${Object.entries(dayDist).map(([day, count]) => `
+                    <div class="analytics-bar">
+                        <span class="analytics-bar__label">${day}</span>
+                        <div class="analytics-bar__track">
+                            <div class="analytics-bar__fill" style="width: ${(count / maxDayCount * 100).toFixed(0)}%"></div>
+                        </div>
+                        <span class="analytics-bar__value">${count}</span>
+                    </div>
+                `).join('')}
+            </div>`;
+            
+            // Card 4: Composition Averages
+            const compAvg = analytics.composition_averages || {};
+            html += `
+            <div class="analytics-card fade-up" style="animation-delay: 0.3s">
+                <div class="analytics-card__title">Avg. Composition per Team</div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">Students</span>
+                    <span class="analytics-row__value">${compAvg.students || 0}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">Non-Students</span>
+                    <span class="analytics-row__value">${compAvg.non_students || 0}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">Women</span>
+                    <span class="analytics-row__value">${compAvg.women || 0}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">Men</span>
+                    <span class="analytics-row__value">${compAvg.men || 0}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">Conservatives</span>
+                    <span class="analytics-row__value">${compAvg.conservatives || 0}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">Liberals</span>
+                    <span class="analytics-row__value">${compAvg.liberals || 0}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">Moderates</span>
+                    <span class="analytics-row__value">${compAvg.moderates || 0}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">White</span>
+                    <span class="analytics-row__value">${compAvg.white || 0}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">Non-White</span>
+                    <span class="analytics-row__value">${compAvg.non_white || 0}</span>
+                </div>
+            </div>`;
+            
+            // Card 5: Violations Summary
+            html += `
+            <div class="analytics-card fade-up" style="animation-delay: 0.4s">
+                <div class="analytics-card__title">Constraint Compliance</div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">✓ Teams OK</span>
+                    <span class="analytics-row__value" style="color: #2e7d32;">${analytics.teams_ok}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">⚠ Soft Violations</span>
+                    <span class="analytics-row__value" style="color: var(--olive-wood);">${analytics.teams_with_soft_violations}</span>
+                </div>
+                <div class="analytics-row">
+                    <span class="analytics-row__label">✗ Hard Violations</span>
+                    <span class="analytics-row__value" style="color: #c62828;">${analytics.teams_with_hard_violations}</span>
+                </div>
+            </div>`;
+            
+            $('#analytics-grid').innerHTML = html;
+        }
+        
+        // ============================================
+        // Facilitator Analytics
+        // ============================================
+        function displayFacilitatorAnalytics(analytics) {
+            const section = $('#facilitator-section');
+            if (!analytics || Object.keys(analytics).length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+            section.style.display = 'block';
+            
+            // Stats row
+            $('#facilitator-stats').innerHTML = `
+                <div class="facilitator-stat fade-up">
+                    <div class="facilitator-stat__value">${analytics.total_fellows}</div>
+                    <div class="facilitator-stat__label">Total Fellows</div>
+                </div>
+                <div class="facilitator-stat fade-up" style="animation-delay: 0.1s">
+                    <div class="facilitator-stat__value">${analytics.fellows_assigned}</div>
+                    <div class="facilitator-stat__label">Assigned</div>
+                </div>
+                <div class="facilitator-stat fade-up" style="animation-delay: 0.15s">
+                    <div class="facilitator-stat__value">${analytics.fellows_unassigned}</div>
+                    <div class="facilitator-stat__label">Unassigned</div>
+                </div>
+                <div class="facilitator-stat fade-up" style="animation-delay: 0.2s">
+                    <div class="facilitator-stat__value">${analytics.new_fellows_total}</div>
+                    <div class="facilitator-stat__label">New Fellows</div>
+                </div>
+                <div class="facilitator-stat fade-up" style="animation-delay: 0.25s">
+                    <div class="facilitator-stat__value">${analytics.returning_fellows_total}</div>
+                    <div class="facilitator-stat__label">Returning</div>
+                </div>
+                <div class="facilitator-stat fade-up" style="animation-delay: 0.3s">
+                    <div class="facilitator-stat__value">${analytics.assignment_rate}%</div>
+                    <div class="facilitator-stat__label">Assignment Rate</div>
+                </div>
+            `;
+            
+            // Fellows detail table
+            const fellows = analytics.fellows_detail || [];
+            $('#fellows-table-body').innerHTML = fellows.map(f => {
+                const statusBadge = f.was_facilitator_before ? 
+                    '<span class="badge badge--returning">Returning</span>' : 
+                    '<span class="badge badge--new">New</span>';
+                const assignedBadge = f.total_assignments > 0 ?
+                    '<span class="badge badge--assigned">Assigned</span>' :
+                    '<span class="badge badge--unassigned">Unassigned</span>';
+                return `
+                <tr>
+                    <td><strong>#${f.id}</strong></td>
+                    <td>${f.category || '—'}</td>
+                    <td>${statusBadge} ${assignedBadge}</td>
+                    <td>${f.ideology || '—'}</td>
+                    <td>${f.year || '—'}</td>
+                    <td>${f.primary_teams.length > 0 ? f.primary_teams.join(', ') : '—'}</td>
+                    <td>${f.secondary_teams.length > 0 ? f.secondary_teams.join(', ') : '—'}</td>
+                    <td><strong>${f.total_assignments}</strong></td>
+                    <td>${f.was_online_last_semester ? '✓' : '—'}</td>
+                    <td>${f.was_not_primary_last_semester ? '✓' : '—'}</td>
+                </tr>
+                `;
+            }).join('');
+        }
+        
+        // ============================================
+        // Build Data Table (ALL columns + fellows)
+        // ============================================
+        function buildDataTable(data) {
+            let tableRows = [];
+            
+            // Iterate over teams and their members
+            data.teams.forEach(team => {
+                team.members.forEach(m => {
+                    tableRows.push(buildTableRow(m, team));
+                });
+            });
+            
+            $('#teams-table-body').innerHTML = tableRows.join('');
+        }
+        
+        function buildTableRow(m, team) {
+            // Determine facilitator role display
+            let isFellow = m.is_fellow ? 'Yes' : 'No';
+            let facRole = '—';
+            let roleLabel = '—';
+            
+            if (team.primary_facilitator && m.id === team.primary_facilitator.id) {
+                facRole = 'Primary';
+                roleLabel = 'Primary Facilitator';
+            } else if (team.secondary_facilitator && m.id === team.secondary_facilitator.id) {
+                facRole = 'Secondary';
+                roleLabel = 'Secondary Facilitator';
+            }
+            
+            // Format preference display
+            let formatPref = m.format_preference_full || '';
+            if (!formatPref) {
+                if (m.format_pref === 'P') formatPref = 'In-Person Only';
+                else if (m.format_pref === 'Z') formatPref = 'Virtual Only';
+                else formatPref = 'Either';
+            }
+            
+            // Courses
+            let courses = (m.courses && m.courses.length > 0) ? m.courses.join(', ') : '—';
+            
+            // Race binary
+            let rb = raceBinaryDisplay(m);
+            
+            // Construct row
+            const isFacRow = (facRole !== '—');
+            
+            return `
+            <tr class="${isFacRow ? 'row-facilitator' : ''}">
+                <td class="td-sticky"><strong>${team.id}</strong></td>
+                <td>${team.day}</td>
+                <td>${team.time}</td>
+                <td>${team.format}</td>
+                <td>${team.round_name || 'Both Rounds'}</td>
+                <!-- Is Fellow -->
+                <td><span class="badge ${m.is_fellow ? 'badge--fellow' : 'badge--participant'}">${isFellow}</span></td>
+                <!-- Facilitator Role -->
+                <td class="${facRole !== '—' ? 'cell-highlight' : ''}">${facRole !== '—' ? `<span class="badge badge--${facRole.toLowerCase()}">${facRole}</span>` : '—'}</td>
+                <!-- Full Role Label -->
+                <td class="${roleLabel !== '—' ? 'cell-highlight' : ''}">${roleLabel}</td>
+                <!-- ID -->
+                <td><strong>#${m.id}</strong></td>
+                <td>${m.status || '—'}</td>
+                <td>${m.date_submitted || '—'}</td>
+                <!-- Category -->
+                <td>${m.category || '—'}</td>
+                <td>${m.is_student ? '✓' : '—'}</td>
+                <td>${m.is_faculty ? '✓' : '—'}</td>
+                <td>${m.is_staff ? '✓' : '—'}</td>
+                <td>${m.is_alum ? '✓' : '—'}</td>
+                <!-- Source -->
+                <td>${m.source || m.connection || '—'}</td>
+                <!-- Demographics -->
+                <td>${m.year || '—'}</td>
+                <td>${m.age_range || '—'}</td>
+                <td>${genderDisplay(m)}</td>
+                <td>${raceDisplay(m)}</td>
+                <td>${rb}</td>
+                <!-- Political -->
+                <td>${ideologyDisplay(m)}</td>
+                <td class="${m.is_conservative ? 'cell-conservative' : ''}">${m.is_conservative ? '✓' : '—'}</td>
+                <td class="${m.is_liberal ? 'cell-liberal' : ''}">${m.is_liberal ? '✓' : '—'}</td>
+                <td>${m.is_moderate ? '✓' : '—'}</td>
+                <!-- Issue Positions -->
+                <td>${m.issue1_position || '—'}</td>
+                <td>${m.pro_liberty_code || '—'}</td>
+                <td>${m.issue2_position || '—'}</td>
+                <td>${m.pro_rule_code || '—'}</td>
+                <!-- Format & Availability -->
+                <td>${formatPref}</td>
+                <td>${m.rounds_full || '—'}</td>
+                <td>${m.total_available || '—'}</td>
+                <td>${m.total_available_if_necessary || '—'}</td>
+                <!-- Course Credit -->
+                <td class="${m.taking_for_credit ? 'cell-credit' : ''}">${m.taking_for_credit ? '✓ Yes' : 'No'}</td>
+                <td>${courses}</td>
+                <!-- Friend Info -->
+                <td>${m.friend_invited ? '#' + m.friend_invited : '—'}</td>
+                <td>${m.friend_invited_name || '—'}</td>
+                <td>${m.friend_invited_by ? '#' + m.friend_invited_by : '—'}</td>
+                <td>${m.friend_invited_by_name || '—'}</td>
+            </tr>
+            `;
+        }
+        
+        // ============================================
+        // Team Modal
+        // ============================================
         function openTeamModal(index) {
             const team = teamsData[index];
             if (!team) return;
             
             $('#modal-title').textContent = team.id;
-            $('#modal-subtitle').textContent = `${team.day} · ${team.time} · ${team.format}`;
+            $('#modal-subtitle').textContent = `${team.day} · ${team.time} · ${team.format} · ${team.round_name || 'Both Rounds'}`;
             
+            // Info grid
+            const c = team.composition;
             $('#modal-info-grid').innerHTML = `
                 <div class="modal-info-item">
                     <div class="modal-info-item__value">${team.size}</div>
                     <div class="modal-info-item__label">Size</div>
                 </div>
                 <div class="modal-info-item">
-                    <div class="modal-info-item__value">${team.composition.students}</div>
+                    <div class="modal-info-item__value">${c.students}</div>
                     <div class="modal-info-item__label">Students</div>
                 </div>
                 <div class="modal-info-item">
-                    <div class="modal-info-item__value">${team.composition.non_students}</div>
+                    <div class="modal-info-item__value">${c.non_students}</div>
                     <div class="modal-info-item__label">Non-Stu</div>
                 </div>
                 <div class="modal-info-item">
-                    <div class="modal-info-item__value">${team.composition.women}</div>
+                    <div class="modal-info-item__value">${c.women}</div>
                     <div class="modal-info-item__label">Women</div>
                 </div>
                 <div class="modal-info-item">
-                    <div class="modal-info-item__value">${team.composition.men}</div>
+                    <div class="modal-info-item__value">${c.men}</div>
                     <div class="modal-info-item__label">Men</div>
                 </div>
                 <div class="modal-info-item">
-                    <div class="modal-info-item__value">${team.composition.conservatives}</div>
+                    <div class="modal-info-item__value">${c.conservatives}</div>
                     <div class="modal-info-item__label">Conserv.</div>
                 </div>
                 <div class="modal-info-item">
-                    <div class="modal-info-item__value">${team.composition.liberals}</div>
+                    <div class="modal-info-item__value">${c.liberals}</div>
                     <div class="modal-info-item__label">Liberal</div>
                 </div>
                 <div class="modal-info-item">
-                    <div class="modal-info-item__value">${team.composition.white}</div>
+                    <div class="modal-info-item__value">${c.white}</div>
                     <div class="modal-info-item__label">White</div>
                 </div>
                 <div class="modal-info-item">
-                    <div class="modal-info-item__value">${team.composition.non_white}</div>
+                    <div class="modal-info-item__value">${c.non_white}</div>
                     <div class="modal-info-item__label">Non-White</div>
                 </div>
             `;
             
             $('#modal-member-count').textContent = team.members.length;
             
-            // Build comprehensive member cards
+            // Build member cards
             $('#modal-members-cards').innerHTML = team.members.map(m => {
-                // Determine role
-                let role = m.id === team.primary_facilitator ? 'Primary Facilitator' : 
-                           m.id === team.secondary_facilitator ? 'Secondary Facilitator' : null;
+                // Role determination
+                let role = null;
+                if (team.primary_facilitator && m.id === team.primary_facilitator.id) role = 'Primary Facilitator';
+                else if (team.secondary_facilitator && m.id === team.secondary_facilitator.id) role = 'Secondary Facilitator';
                 let isFacilitator = role !== null;
                 
-                // Build badges
+                // Badges
                 let badges = [];
-                if (role) badges.push(`<span class="member-badge member-badge--facilitator">${role}</span>`);
-                badges.push(`<span class="member-badge member-badge--${m.is_student ? 'student' : 'non-student'}">${m.category || (m.is_student ? 'Student' : 'Non-Student')}</span>`);
-                if (m.taking_for_credit) badges.push(`<span class="member-badge member-card__value--credit">📚 For Credit</span>`);
-                
-                // Gender display
-                let genderDisplay = '—';
-                if (m.is_female) genderDisplay = 'Female';
-                else if (m.is_male) genderDisplay = 'Male';
-                else if (m.is_nonbinary) genderDisplay = 'Nonbinary';
-                else if (m.is_trans) genderDisplay = 'Trans';
-                else if (m.prefer_not_say_gender) genderDisplay = 'Prefer not to say';
-                
-                // Ideology display
-                let ideologyDisplay = m.ideology || '—';
-                if (ideologyDisplay === '—') {
-                    if (m.is_conservative) ideologyDisplay = 'Conservative';
-                    else if (m.is_liberal) ideologyDisplay = 'Liberal';
-                    else if (m.is_moderate) ideologyDisplay = 'Moderate';
-                }
+                if (m.is_fellow) badges.push(`<span class="badge badge--fellow">DCI Fellow</span>`);
+                if (role) badges.push(`<span class="badge badge--${role.startsWith('Primary') ? 'primary' : 'secondary'}">${role}</span>`);
+                badges.push(`<span class="badge badge--participant">${m.category || (m.is_student ? 'Student' : 'Non-Student')}</span>`);
+                if (m.taking_for_credit) badges.push(`<span class="badge" style="background:rgba(123,107,67,0.15);color:var(--olive-bark);">📚 Credit</span>`);
                 
                 // Race tags
                 let raceTags = '';
@@ -2059,108 +1476,82 @@
                     courseTags = m.courses.map(c => `<span class="member-tag member-tag--small member-tag--course">${c}</span>`).join('');
                 }
                 
-                // Format friend info
+                // Friend info
                 let friendInfo = '';
                 if (m.friend_invited) {
                     friendInfo += `Invited #${m.friend_invited}`;
-                    if (m.invited_friend_importance) friendInfo += ` (${m.invited_friend_importance})`;
+                    if (m.friend_invited_name) friendInfo += ` (${m.friend_invited_name})`;
+                    if (m.invited_friend_importance) friendInfo += ` — ${m.invited_friend_importance}`;
                 }
                 if (m.friend_invited_by) {
-                    if (friendInfo) friendInfo += ' · ';
+                    if (friendInfo) friendInfo += '<br>';
                     friendInfo += `Invited by #${m.friend_invited_by}`;
-                    if (m.been_invited_importance) friendInfo += ` (${m.been_invited_importance})`;
+                    if (m.friend_invited_by_name) friendInfo += ` (${m.friend_invited_by_name})`;
+                    if (m.been_invited_importance) friendInfo += ` — ${m.been_invited_importance}`;
                 }
                 
                 return `
-                    <div class="member-card ${isFacilitator ? 'member-card--facilitator' : ''}">
-                        <div class="member-card__header">
-                            <span class="member-card__id">Participant #${m.id}</span>
-                            <div class="member-card__badges">${badges.join('')}</div>
-                        </div>
-                        <div class="member-card__body">
-                            <div class="member-card__grid">
-                                <!-- Demographics Section -->
-                                <div class="member-card__section">
-                                    <div class="member-card__section-title">Demographics</div>
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Category</span>
-                                        <span class="member-card__value">${m.category || '—'}</span>
-                                    </div>
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Gender</span>
-                                        <span class="member-card__value">${genderDisplay}</span>
-                                    </div>
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Year/Age</span>
-                                        <span class="member-card__value">${m.year || m.age_range || '—'}</span>
-                                    </div>
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Race/Ethnicity</span>
-                                    </div>
-                                    <div class="member-card__tags">${raceTags || '<span class="member-tag member-tag--small">—</span>'}</div>
+                <div class="member-card ${isFacilitator ? 'member-card--facilitator' : ''}">
+                    <div class="member-card__header">
+                        <span class="member-card__id">Participant #${m.id}</span>
+                        <div class="member-card__badges">${badges.join('')}</div>
+                    </div>
+                    <div class="member-card__body">
+                        <div class="member-card__grid">
+                            <!-- Demographics -->
+                            <div class="member-card__section">
+                                <div class="member-card__section-title">Demographics</div>
+                                <div class="member-card__row"><span class="member-card__label">Category</span><span class="member-card__value">${m.category || '—'}</span></div>
+                                <div class="member-card__row"><span class="member-card__label">Gender</span><span class="member-card__value">${genderDisplay(m)}</span></div>
+                                <div class="member-card__row"><span class="member-card__label">Year</span><span class="member-card__value">${m.year || '—'}</span></div>
+                                <div class="member-card__row"><span class="member-card__label">Age Range</span><span class="member-card__value">${m.age_range || '—'}</span></div>
+                                <div class="member-card__row"><span class="member-card__label">Source</span><span class="member-card__value">${m.source || '—'}</span></div>
+                                <div class="member-card__row"><span class="member-card__label">Race/Ethnicity</span></div>
+                                <div class="member-card__tags">${raceTags || '<span class="member-tag member-tag--small">—</span>'}</div>
+                            </div>
+                            
+                            <!-- Political -->
+                            <div class="member-card__section">
+                                <div class="member-card__section-title">Political Views</div>
+                                <div class="member-card__row">
+                                    <span class="member-card__label">Ideology</span>
+                                    <span class="member-card__value ${m.is_conservative ? 'member-card__value--highlight' : ''}">${ideologyDisplay(m)}</span>
                                 </div>
-                                
-                                <!-- Political Section -->
-                                <div class="member-card__section">
-                                    <div class="member-card__section-title">Political Views</div>
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Ideology</span>
-                                        <span class="member-card__value ${m.is_conservative ? 'member-card__value--highlight' : ''}">${ideologyDisplay}</span>
-                                    </div>
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Immigration Issue</span>
-                                        <span class="member-card__value">${m.issue1_position || '—'}</span>
-                                    </div>
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Presidency Issue</span>
-                                        <span class="member-card__value">${m.issue2_position || '—'}</span>
-                                    </div>
+                                <div class="member-card__row"><span class="member-card__label">Pro Liberty</span><span class="member-card__value">${m.issue1_position || '—'}</span></div>
+                                <div class="member-card__row"><span class="member-card__label">Pro Rule of Law</span><span class="member-card__value">${m.issue2_position || '—'}</span></div>
+                            </div>
+                            
+                            <!-- Participation -->
+                            <div class="member-card__section">
+                                <div class="member-card__section-title">Participation</div>
+                                <div class="member-card__row"><span class="member-card__label">Format Pref.</span><span class="member-card__value">${m.format_preference_full || (m.format_pref === 'P' ? 'In-Person' : m.format_pref === 'Z' ? 'Virtual' : 'Either')}</span></div>
+                                <div class="member-card__row"><span class="member-card__label">Rounds</span><span class="member-card__value">${m.rounds_full || '—'}</span></div>
+                                <div class="member-card__row"><span class="member-card__label">Available Slots</span><span class="member-card__value">${m.total_available || '—'}</span></div>
+                                <div class="member-card__row"><span class="member-card__label">If-Necessary Slots</span><span class="member-card__value">${m.total_available_if_necessary || '—'}</span></div>
+                                <div class="member-card__row">
+                                    <span class="member-card__label">For Credit</span>
+                                    <span class="member-card__value ${m.taking_for_credit ? 'member-card__value--credit' : ''}">${m.taking_for_credit ? 'Yes' : 'No'}</span>
                                 </div>
-                                
-                                <!-- Participation Section -->
-                                <div class="member-card__section">
-                                    <div class="member-card__section-title">Participation</div>
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Format Pref.</span>
-                                        <span class="member-card__value">${m.format_pref === 'P' ? 'In-Person Only' : m.format_pref === 'Z' ? 'Virtual Only' : 'Either'}</span>
-                                    </div>
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Available Slots</span>
-                                        <span class="member-card__value">${m.total_available || '—'}</span>
-                                    </div>
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">For Class Credit</span>
-                                        <span class="member-card__value ${m.taking_for_credit ? 'member-card__value--credit' : ''}">${m.taking_for_credit ? 'Yes' : 'No'}</span>
-                                    </div>
-                                    ${m.taking_for_credit && m.courses && m.courses.length > 0 ? `
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Course(s)</span>
-                                    </div>
-                                    <div class="member-card__tags">${courseTags}</div>
-                                    ` : ''}
-                                </div>
-                                
-                                <!-- Connection Section -->
-                                <div class="member-card__section">
-                                    <div class="member-card__section-title">Registration Info</div>
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Connection</span>
-                                        <span class="member-card__value">${m.connection || '—'}</span>
-                                    </div>
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Status</span>
-                                        <span class="member-card__value">${m.status || '—'}</span>
-                                    </div>
-                                    ${friendInfo ? `
-                                    <div class="member-card__row">
-                                        <span class="member-card__label">Friend Request</span>
-                                        <span class="member-card__value">${friendInfo}</span>
-                                    </div>
-                                    ` : ''}
-                                </div>
+                                ${m.taking_for_credit && m.courses && m.courses.length > 0 ? `
+                                <div class="member-card__row"><span class="member-card__label">Course(s)</span></div>
+                                <div class="member-card__tags">${courseTags}</div>` : ''}
+                            </div>
+                            
+                            <!-- Registration -->
+                            <div class="member-card__section">
+                                <div class="member-card__section-title">Registration Info</div>
+                                <div class="member-card__row"><span class="member-card__label">Status</span><span class="member-card__value">${m.status || '—'}</span></div>
+                                <div class="member-card__row"><span class="member-card__label">Submitted</span><span class="member-card__value">${m.date_submitted || '—'}</span></div>
+                                <div class="member-card__row"><span class="member-card__label">Is Fellow</span><span class="member-card__value">${m.is_fellow ? 'Yes' : 'No'}</span></div>
+                                ${friendInfo ? `
+                                <div style="margin-top: var(--space-sm); padding-top: var(--space-sm); border-top: 1px solid var(--light-fawn);">
+                                    <div class="member-card__row"><span class="member-card__label">Friend Info</span></div>
+                                    <div style="font-size: 0.75rem; color: var(--olive-bark); margin-top: 2px;">${friendInfo}</div>
+                                </div>` : ''}
                             </div>
                         </div>
                     </div>
+                </div>
                 `;
             }).join('');
             
