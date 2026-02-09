@@ -246,6 +246,17 @@ def format_solution_for_frontend(solution):
         pf = team['primary_facilitator']
         sf = team['secondary_facilitator']
 
+        # Build unified members list: regular participants + facilitators
+        all_members = [format_member(m) for m in team['members']]
+
+        # Inject facilitators into the members list with is_fellow=True
+        if pf:
+            pf_formatted = format_member_from_fellow(pf, 'Primary')
+            all_members.append(pf_formatted)
+        if sf:
+            sf_formatted = format_member_from_fellow(sf, 'Secondary')
+            all_members.append(sf_formatted)
+
         teams.append({
             'id': tid,
             'day': team['info']['day'],
@@ -260,7 +271,7 @@ def format_solution_for_frontend(solution):
             'status': status,
             'hard_violations': hard_violations,
             'soft_violations': soft_violations,
-            'members': [format_member(m) for m in team['members']]
+            'members': all_members,
         })
 
     # Format unassigned participants
@@ -376,6 +387,86 @@ def format_facilitator_for_team(f):
         'issue2_position': safe_get(f, 'issue2_position', ''),
         'source': safe_get(f, 'source', ''),
         'format_preference_full': safe_get(f, 'format_preference_full', ''),
+        'rounds_full': safe_get(f, 'rounds_full', ''),
+    }
+
+
+def format_member_from_fellow(f, role_label):
+    """
+    Format a fellow/facilitator record into the same shape as format_member()
+    so facilitators appear unified in the members list with is_fellow=True.
+    """
+    if f is None:
+        return None
+
+    gender_map = {1: 'Male', 2: 'Female', 3: 'Non-binary', 4: 'Prefer not to say', 5: 'Self-describe'}
+    gender_code = safe_get(f, 'gender_code', 0)
+
+    return {
+        'id': f['id'],
+        'is_student': safe_get(f, 'is_student', False),
+        'is_female': safe_get(f, 'is_female', False),
+        'is_male': safe_get(f, 'is_male', False),
+        'is_conservative': safe_get(f, 'is_conservative', False),
+        'is_liberal': safe_get(f, 'is_liberal', False),
+        'is_white': safe_get(f, 'is_white', False),
+        'is_nonwhite': safe_get(f, 'is_nonwhite', False),
+        'is_fellow': True,
+        'facilitator_role': role_label,
+        'category': safe_get(f, 'category', 'Fellow'),
+        'is_staff': safe_get(f, 'is_staff', False),
+        'is_faculty': safe_get(f, 'is_faculty', False),
+        'is_alum': safe_get(f, 'is_alum', False),
+        'is_community_alum': safe_get(f, 'is_community_alum', False),
+        'gender': gender_map.get(gender_code, ''),
+        'gender_code': gender_code,
+        'is_nonbinary': safe_get(f, 'is_nonbinary', False),
+        'is_trans': safe_get(f, 'is_trans', False),
+        'prefer_not_say_gender': safe_get(f, 'prefer_not_say_gender', False),
+        'races': safe_get(f, 'races', []),
+        'race_codes': safe_get(f, 'race_codes', []),
+        'race_binary': safe_get(f, 'race_binary', 2),
+        'race_black': safe_get(f, 'race_black', False),
+        'race_hispanic': safe_get(f, 'race_hispanic', False),
+        'race_white': safe_get(f, 'race_white', False),
+        'race_asian': safe_get(f, 'race_asian', False),
+        'race_native': safe_get(f, 'race_native', False),
+        'race_other': safe_get(f, 'race_other', False),
+        'prefer_not_say_race': safe_get(f, 'prefer_not_say_race', False),
+        'ideology': safe_get(f, 'ideology', ''),
+        'ideology_code': safe_get(f, 'ideology_code', 0),
+        'is_moderate': safe_get(f, 'is_moderate', False),
+        'issue1_position': safe_get(f, 'issue1_position', ''),
+        'issue2_position': safe_get(f, 'issue2_position', ''),
+        'issue1_agree': safe_get(f, 'issue1_agree', False),
+        'issue1_disagree': safe_get(f, 'issue1_disagree', False),
+        'issue2_agree': safe_get(f, 'issue2_agree', False),
+        'issue2_disagree': safe_get(f, 'issue2_disagree', False),
+        'pro_liberty_code': safe_get(f, 'pro_liberty_code', 0),
+        'pro_rule_code': safe_get(f, 'pro_rule_code', 0),
+        'year': safe_get(f, 'year', ''),
+        'year_code': safe_get(f, 'year_code', 0),
+        'age_range': safe_get(f, 'age_range', ''),
+        'age_code': safe_get(f, 'age_code', 0),
+        'source': safe_get(f, 'source', ''),
+        'source_codes': safe_get(f, 'source_codes', []),
+        'format_pref': safe_get(f, 'format_pref', ''),
+        'format_preference_full': safe_get(f, 'format_preference_full', ''),
+        'taking_for_credit': safe_get(f, 'taking_for_credit', False),
+        'courses': safe_get(f, 'courses', []),
+        'connection': safe_get(f, 'connection', ''),
+        'date_submitted': safe_get(f, 'date_submitted', ''),
+        'status': safe_get(f, 'status', ''),
+        'friend_invited': safe_get(f, 'friend_invited', None),
+        'friend_invited_by': safe_get(f, 'friend_invited_by', None),
+        'friend_invited_name': safe_get(f, 'friend_invited_name', ''),
+        'friend_invited_by_name': safe_get(f, 'friend_invited_by_name', ''),
+        'invited_friend_importance': safe_get(f, 'invited_friend_importance', ''),
+        'been_invited_importance': safe_get(f, 'been_invited_importance', ''),
+        'total_available': safe_get(f, 'total_available', 0),
+        'total_available_if_necessary': safe_get(f, 'total_available_if_necessary', 0),
+        'assigned_to_preferred': safe_get(f, 'assigned_to_preferred', True),
+        'round_type': safe_get(f, 'round_type', 'B'),
         'rounds_full': safe_get(f, 'rounds_full', ''),
     }
 
