@@ -652,7 +652,7 @@
                                 <table class="fellows-table">
                                     <thead>
                                         <tr>
-                                            <th>Fellow ID</th>
+                                            <th>Fellow Unique ID</th>
                                             <th>Category</th>
                                             <th>Status</th>
                                             <th>Ideology</th>
@@ -700,7 +700,7 @@
                                         <th>Fac. Role</th>
                                         <th>Role</th>
                                         <!-- Identification -->
-                                        <th>ID</th>
+                                        <th>Unique ID</th>
                                         <th>Status</th>
                                         <th>Date Submitted</th>
                                         <!-- Category -->
@@ -1493,7 +1493,7 @@
                 return `
                 <div class="member-card ${isFacilitator ? 'member-card--facilitator' : ''}">
                     <div class="member-card__header">
-                        <span class="member-card__id">Participant #${m.id}</span>
+                        <span class="member-card__id">Unique ID #${m.id}</span>
                         <div class="member-card__badges">${badges.join('')}</div>
                     </div>
                     <div class="member-card__body">

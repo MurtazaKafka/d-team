@@ -199,7 +199,12 @@ def upload_file():
 
     except Exception as e:
         traceback.print_exc()
-        return jsonify({'error': str(e)}), 500
+        error_msg = str(e)
+        if 'Infeasible' in error_msg or 'infeasible' in error_msg:
+            error_msg = "The solver could not find a feasible solution with the given data and constraints. Try adjusting team size parameters."
+        elif 'timeout' in error_msg.lower() or 'time limit' in error_msg.lower():
+            error_msg = "The solver timed out. Try increasing the time limit or reducing the data size."
+        return jsonify({'error': f'Error processing file: {error_msg}'}), 500
 
 
 @app.route('/download/<solution_id>/<format_type>')
@@ -778,28 +783,34 @@ def generate_excel_download(solution, timestamp):
         })
     df_summary = pd.DataFrame(summary_rows)
 
-    # ---- Sheet 3: All Participants ----
+    # ---- Sheet 3: All Participants (including facilitators) ----
     gender_map = {1: 'Male', 2: 'Female', 3: 'Non-binary', 4: 'Prefer not to say', 5: 'Self-describe'}
     participant_rows = []
     for tid, team in sorted(solution['teams'].items()):
-        for m in team['members']:
-            role = ''
-            if team['primary_facilitator'] and m['id'] == team['primary_facilitator']['id']:
-                role = 'Primary'
-            elif team['secondary_facilitator'] and m['id'] == team['secondary_facilitator']['id']:
-                role = 'Secondary'
+        round_type = team['info'].get('round_type', 'B')
+        round_name = {'B': 'Both Rounds', 'C': 'First Round Only', 'D': 'Second Round Only'}.get(round_type, 'Both Rounds')
 
+        # Collect all people on this team: participants + facilitators
+        team_people = []
+        for m in team['members']:
+            team_people.append((m, ''))
+
+        pf = team['primary_facilitator']
+        sf = team['secondary_facilitator']
+        if pf:
+            team_people.append((pf, 'Primary'))
+        if sf:
+            team_people.append((sf, 'Secondary'))
+
+        for m, role in team_people:
             gc = m.get('gender_code', 0)
             gender = gender_map.get(gc, 'Unknown') if gc else 'Unknown'
-            if m['is_female']: gender = 'Female'
-            elif m['is_male']: gender = 'Male'
+            if m.get('is_female'): gender = 'Female'
+            elif m.get('is_male'): gender = 'Male'
             elif m.get('is_nonbinary'): gender = 'Non-binary'
 
             races = m.get('races', [])
-            race_str = ', '.join(races) if races else ('White' if m['is_white'] else ('Non-White' if m['is_nonwhite'] else 'Unknown'))
-
-            round_type = team['info'].get('round_type', 'B')
-            round_name = {'B': 'Both Rounds', 'C': 'First Round Only', 'D': 'Second Round Only'}.get(round_type, 'Both Rounds')
+            race_str = ', '.join(races) if races else ('White' if m.get('is_white') else ('Non-White' if m.get('is_nonwhite') else 'Unknown'))
 
             participant_rows.append({
                 'Team ID': tid,
@@ -809,16 +820,17 @@ def generate_excel_download(solution, timestamp):
                 'Team Round': round_name,
                 'Is Facilitator': 'Yes' if role else 'No',
                 'Facilitator Role': role,
-                'Participant ID': m['id'],
-                'Category': m.get('category', 'Student' if m['is_student'] else 'Non-Student'),
-                'Is Student': 'Yes' if m['is_student'] else 'No',
+                'Unique ID': m['id'],
+                'Category': m.get('category', 'Student' if m.get('is_student') else 'Non-Student'),
+                'Is Student': 'Yes' if m.get('is_student') else 'No',
                 'Year/Class': m.get('year', ''),
                 'Age Range': m.get('age_range', ''),
                 'Gender': gender,
                 'Race/Ethnicity': race_str,
+                'Race Binary': {0: 'Prefer not to respond', 1: 'Non-White', 2: 'White'}.get(m.get('race_binary'), ''),
                 'Political Ideology': m.get('ideology', ''),
-                'Is Conservative': 'Yes' if m['is_conservative'] else 'No',
-                'Is Liberal': 'Yes' if m['is_liberal'] else 'No',
+                'Is Conservative': 'Yes' if m.get('is_conservative') else 'No',
+                'Is Liberal': 'Yes' if m.get('is_liberal') else 'No',
                 'Is Moderate': 'Yes' if m.get('is_moderate') else 'No',
                 'Pro Liberty Position': m.get('issue1_position', ''),
                 'Pro Rule of Law Position': m.get('issue2_position', ''),
@@ -873,7 +885,7 @@ def generate_excel_download(solution, timestamp):
             reason = 'No compatible team found'
 
         unassigned_rows.append({
-            'Participant ID': p['id'],
+            'Unique ID': p['id'],
             'Category': p.get('category', 'Student' if p['is_student'] else 'Non-Student'),
             'Format Preference': p.get('format_preference_full', ''),
             'Round Preference': round_name,
@@ -918,30 +930,35 @@ def generate_excel_download(solution, timestamp):
 
 
 def generate_csv_download(solution, timestamp):
-    """Generate comprehensive CSV file."""
+    """Generate comprehensive CSV file including facilitators."""
     output = io.StringIO()
     gender_map = {1: 'Male', 2: 'Female', 3: 'Non-binary', 4: 'Prefer not to say', 5: 'Self-describe'}
 
     rows = []
     for tid, team in sorted(solution['teams'].items()):
-        for m in team['members']:
-            role = ''
-            if team['primary_facilitator'] and m['id'] == team['primary_facilitator']['id']:
-                role = 'Primary'
-            elif team['secondary_facilitator'] and m['id'] == team['secondary_facilitator']['id']:
-                role = 'Secondary'
+        round_type = team['info'].get('round_type', 'B')
+        round_name = {'B': 'Both Rounds', 'C': 'First Round Only', 'D': 'Second Round Only'}.get(round_type, 'Both Rounds')
 
+        # Collect all people: participants + facilitators
+        team_people = []
+        for m in team['members']:
+            team_people.append((m, ''))
+        pf = team['primary_facilitator']
+        sf = team['secondary_facilitator']
+        if pf:
+            team_people.append((pf, 'Primary'))
+        if sf:
+            team_people.append((sf, 'Secondary'))
+
+        for m, role in team_people:
             gc = m.get('gender_code', 0)
             gender = gender_map.get(gc, 'Unknown') if gc else 'Unknown'
-            if m['is_female']: gender = 'Female'
-            elif m['is_male']: gender = 'Male'
+            if m.get('is_female'): gender = 'Female'
+            elif m.get('is_male'): gender = 'Male'
             elif m.get('is_nonbinary'): gender = 'Non-binary'
 
             races = m.get('races', [])
-            race_str = ', '.join(races) if races else ('White' if m['is_white'] else 'Non-White')
-
-            round_type = team['info'].get('round_type', 'B')
-            round_name = {'B': 'Both Rounds', 'C': 'First Round Only', 'D': 'Second Round Only'}.get(round_type, 'Both Rounds')
+            race_str = ', '.join(races) if races else ('White' if m.get('is_white') else ('Non-White' if m.get('is_nonwhite') else 'Unknown'))
 
             rows.append({
                 'Team ID': tid,
@@ -951,12 +968,14 @@ def generate_csv_download(solution, timestamp):
                 'Team Round': round_name,
                 'Is Facilitator': 'Yes' if role else 'No',
                 'Facilitator Role': role,
-                'Participant ID': m['id'],
+                'Unique ID': m['id'],
                 'Category': m.get('category', ''),
+                'Is Student': 'Yes' if m.get('is_student') else 'No',
                 'Year': m.get('year', ''),
                 'Age Range': m.get('age_range', ''),
                 'Gender': gender,
                 'Race/Ethnicity': race_str,
+                'Race Binary': {0: 'Prefer not to respond', 1: 'Non-White', 2: 'White'}.get(m.get('race_binary'), ''),
                 'Political Ideology': m.get('ideology', ''),
                 'Pro Liberty Position': m.get('issue1_position', ''),
                 'Pro Rule of Law Position': m.get('issue2_position', ''),

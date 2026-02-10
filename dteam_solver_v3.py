@@ -501,11 +501,24 @@ class DTeamSolverV3:
                 pass
 
         # Determine white/non-white
-        is_white = (race_binary == 2) or (7 in race_codes and len(race_codes) == 1)
-        is_nonwhite = (race_binary == 1) or (race_codes and 7 not in race_codes) or (len(race_codes) > 1 and 7 in race_codes)
-
-        if not is_white and not is_nonwhite:
-            is_white = True  # default assumption
+        # race_binary: 0 = prefer not to respond (ignore in race constraints), 1 = non-white, 2 = white
+        if race_binary == 0:
+            # Prefer not to respond: don't count as either for constraint purposes
+            is_white = False
+            is_nonwhite = False
+        elif race_binary == 1:
+            is_white = False
+            is_nonwhite = True
+        elif race_binary == 2:
+            is_white = True
+            is_nonwhite = False
+        else:
+            # Fallback to race codes if race_binary missing
+            is_white = (7 in race_codes and len(race_codes) == 1)
+            is_nonwhite = bool(race_codes and 7 not in race_codes) or (len(race_codes) > 1 and 7 in race_codes)
+            if not is_white and not is_nonwhite:
+                is_white = False
+                is_nonwhite = False
 
         # ========== ISSUE POSITIONS ==========
         pro_liberty = row.get('Pro Liberty')
@@ -845,14 +858,27 @@ class DTeamSolverV3:
         """
         Check if a participant can join a given team slot.
         Returns (can_join, is_preferred) where is_preferred means "Available" not just "If Necessary".
+        
+        'Both Rounds' (B) participants can also join First-Only (C) and 
+        Second-Only (D) team slots, since they're available for both rounds.
         """
-        # Round type must match
-        if participant['round_type'] != team['round_type']:
+        # Round type must match (or participant is "Both" which covers C and D)
+        p_round = participant['round_type']
+        t_round = team['round_type']
+        if p_round != t_round and p_round != self.ROUND_BOTH:
             return False, False
 
         slot_code = team['slot_code']
-        is_available = slot_code in participant['available_slots']
-        is_available_if_necessary = slot_code in participant.get('available_if_necessary_slots', [])
+        
+        # For "Both" participants joining C/D teams, check the B-version of the slot
+        if p_round == self.ROUND_BOTH and t_round != self.ROUND_BOTH:
+            time_part = slot_code[1:]  # e.g., 'm630' from 'Cm630'
+            check_code = 'B' + time_part  # e.g., 'Bm630'
+        else:
+            check_code = slot_code
+        
+        is_available = check_code in participant['available_slots']
+        is_available_if_necessary = check_code in participant.get('available_if_necessary_slots', [])
 
         if not is_available and not (use_if_necessary and is_available_if_necessary):
             return False, False
@@ -867,8 +893,25 @@ class DTeamSolverV3:
         return True, is_available
 
     def _can_fellow_facilitate_team(self, fellow: dict, team: dict) -> bool:
-        """Check if a fellow can facilitate a given team slot."""
-        if team['slot_code'] not in fellow['available_slots']:
+        """Check if a fellow can facilitate a given team slot.
+        
+        'Both Rounds' (B) fellows can also facilitate First-Only (C) and 
+        Second-Only (D) team slots, since they're available for both rounds.
+        We check if the fellow is available for the same time slot (ignoring 
+        round prefix) to enable cross-round staffing.
+        """
+        slot_code = team['slot_code']  # e.g., 'Cm630' or 'Dm630'
+        
+        # Direct match: fellow has this exact slot
+        if slot_code in fellow['available_slots']:
+            pass  # OK, matched
+        elif fellow['round_type'] == self.ROUND_BOTH:
+            # "Both Rounds" fellow → check if they have the B-version of this time slot
+            time_part = slot_code[1:]  # e.g., 'm630' from 'Cm630'
+            b_slot = 'B' + time_part   # e.g., 'Bm630'
+            if b_slot not in fellow['available_slots']:
+                return False
+        else:
             return False
 
         format_pref = fellow['format_pref']
@@ -903,8 +946,8 @@ class DTeamSolverV3:
         self.log("STARTING OPTIMIZATION")
         self.log("=" * 70)
 
-        actual_min = min_team_size - 1 if allow_flexible_size else min_team_size
-        actual_max = max_team_size + 1 if allow_flexible_size else max_team_size
+        actual_min = max(min_team_size - 3, 5) if allow_flexible_size else min_team_size
+        actual_max = max_team_size + 2 if allow_flexible_size else max_team_size
 
         self.log(f"Team size target: {min_team_size}-{max_team_size} (flexible: {actual_min}-{actual_max})")
 
@@ -976,25 +1019,26 @@ class DTeamSolverV3:
 
         # Weights (higher = more important)
         W_PARTICIPANT = 1000       # Base reward for assigning a participant
-        W_HARD_STUDENT = 50000     # Penalty for violating student minimum
-        W_HARD_NONSTU = 50000      # Penalty for violating non-student minimum
-        W_SIZE_UNDER = 100         # Penalty for being under min team size
-        W_SIZE_OVER = 100          # Penalty for being over max team size
-        W_WOMEN = 80               # Penalty for not having 2 women
-        W_MEN = 60                 # Penalty for not having 2 men
-        W_CONSERVATIVE = 70        # Penalty for no conservative
-        W_LIBERAL = 70             # Penalty for no liberal
-        W_WHITE = 50               # Penalty for no white participant
-        W_NONWHITE = 70            # Penalty for no non-white participant
-        W_ISSUE1_AGREE = 40        # Penalty for no Pro Liberty agree
-        W_ISSUE1_DISAGREE = 40     # Penalty for no Pro Liberty disagree
-        W_ISSUE2_AGREE = 40        # Penalty for no Pro Rule agree
-        W_ISSUE2_DISAGREE = 40     # Penalty for no Pro Rule disagree
+        W_HARD_STUDENT = 500       # Penalty for violating student minimum (soft - fellows count too)
+        W_HARD_NONSTU = 500        # Penalty for violating non-student minimum (soft - fellows count too)
+        W_SIZE_UNDER = 350         # Penalty per person under TARGET size (per person: 1 short of 8 = 350 penalty)
+        W_SIZE_OVER = 60           # Penalty for being over max team size
+        W_WOMEN = 60               # Penalty for not having 2 women
+        W_MEN = 40                 # Penalty for not having 2 men
+        W_CONSERVATIVE = 50        # Penalty for no conservative
+        W_LIBERAL = 50             # Penalty for no liberal
+        W_WHITE = 40               # Penalty for no white participant
+        W_NONWHITE = 50            # Penalty for no non-white participant
+        W_ISSUE1_AGREE = 30        # Penalty for no Pro Liberty agree
+        W_ISSUE1_DISAGREE = 30     # Penalty for no Pro Liberty disagree
+        W_ISSUE2_AGREE = 30        # Penalty for no Pro Rule agree
+        W_ISSUE2_DISAGREE = 30     # Penalty for no Pro Rule disagree
         W_FRIEND = 200             # Bonus for placing friend pairs together
         W_INPERSON_PREF = 10       # Small bonus for putting either-format in person
         W_LOW_AVAIL_BONUS = 50     # Bonus for participants with few available slots
         W_PREFERRED_SLOT = 5       # Small bonus for "Available" over "If Necessary"
         W_NEW_FELLOW_BONUS = 30    # Bonus for assigning new (non-returning) fellows
+        W_ONLINE_FELLOW_INPERSON = 25  # Bonus for online-last-semester fellows going in-person
 
         objective = 0
 
@@ -1050,6 +1094,18 @@ class DTeamSolverV3:
                 if not f['was_facilitator_before']:
                     objective += W_NEW_FELLOW_BONUS * f_secondary[f['id']][t_id]
 
+        # Online-last-semester fellows should be prioritized for in-person teams
+        for f in self.fellows:
+            if f.get('was_online_last_semester', False):
+                for t_id in f_primary.get(f['id'], {}):
+                    team = next(t for t in self.team_slots if t['id'] == t_id)
+                    if not team['is_virtual']:
+                        objective += W_ONLINE_FELLOW_INPERSON * f_primary[f['id']][t_id]
+                for t_id in f_secondary.get(f['id'], {}):
+                    team = next(t for t in self.team_slots if t['id'] == t_id)
+                    if not team['is_virtual']:
+                        objective += W_ONLINE_FELLOW_INPERSON * f_secondary[f['id']][t_id]
+
         prob += objective, "Total_Objective"
 
         # ================================================================
@@ -1087,11 +1143,29 @@ class DTeamSolverV3:
                     lpSum(f_primary[f['id']][t['id']] for f in eligible_p) == y[t['id']],
                     f"HC3_primary_{t['id']}"
                 )
+            else:
+                # No fellows can be primary here → team CANNOT form
+                prob += (y[t['id']] == 0, f"HC3_no_primary_{t['id']}")
             if eligible_s:
                 prob += (
                     lpSum(f_secondary[f['id']][t['id']] for f in eligible_s) == y[t['id']],
                     f"HC3_secondary_{t['id']}"
                 )
+            else:
+                # No fellows can be secondary here → team CANNOT form
+                prob += (y[t['id']] == 0, f"HC3_no_secondary_{t['id']}")
+
+        # ---- HARD CONSTRAINT 3b: Limit total teams to what fellow pool can sustain ----
+        # With N fellows, each doing primary≤2 and secondary≤2, practical max is about N
+        # But also limit by participant count: we want teams of at least min_team_size
+        max_by_fellows = len(self.fellows)
+        max_by_participants = len(self.participants) // actual_min + 1
+        max_possible_teams = min(max_by_fellows, max_by_participants)
+        prob += (
+            lpSum(y[t['id']] for t in self.team_slots) <= max_possible_teams,
+            "HC3b_max_teams"
+        )
+        self.log(f"  Max teams limited to {max_possible_teams} (min of {max_by_fellows} fellows, {max_by_participants} by participants)")
 
         # ---- HARD CONSTRAINT 4: No fellow as both Primary and Secondary for same team ----
         for f in self.fellows:
@@ -1103,8 +1177,8 @@ class DTeamSolverV3:
                     )
 
         # ---- HARD CONSTRAINT 5: Limit assignments per fellow ----
-        max_primary = 2
-        max_secondary = 2
+        max_primary = 3
+        max_secondary = 3
         for f in self.fellows:
             primary_teams = [t['id'] for t in self.team_slots if t['id'] in f_primary.get(f['id'], {})]
             secondary_teams = [t['id'] for t in self.team_slots if t['id'] in f_secondary.get(f['id'], {})]
@@ -1118,6 +1192,17 @@ class DTeamSolverV3:
                     lpSum(f_secondary[f['id']][t_id] for t_id in secondary_teams) <= max_secondary,
                     f"HC5_max_s_{f['id']}"
                 )
+
+        # ---- HARD CONSTRAINT 5b: Fellows who were NOT Primary last semester MUST be Primary ≥1 ----
+        for f in self.fellows:
+            if f.get('was_not_primary_last_semester', False):
+                primary_teams = [t_id for t_id in f_primary.get(f['id'], {})]
+                if primary_teams:
+                    prob += (
+                        lpSum(f_primary[f['id']][t_id] for t_id in primary_teams) >= 1,
+                        f"HC5b_must_primary_{f['id']}"
+                    )
+                    self.log(f"  HARD: Fellow {f['id']} must be Primary (was not Primary last semester)")
 
         # ---- HARD CONSTRAINT 6: At least 2 students per team ----
         for t in self.team_slots:
@@ -1143,17 +1228,23 @@ class DTeamSolverV3:
 
         # ---- SOFT CONSTRAINTS ----
 
-        # SC1: Team size within range
+        # SC1: Team size within range (penalize shortfall from TARGET, not floor)
         for t in self.team_slots:
             eligible = [p for p in self.participants if t['id'] in x[p['id']]]
             if eligible:
+                # Penalize shortfall from TARGET min_team_size (e.g., 8)
                 prob += (
-                    lpSum(x[p['id']][t['id']] for p in eligible) + s_size_under[t['id']] >= actual_min * y[t['id']],
+                    lpSum(x[p['id']][t['id']] for p in eligible) + s_size_under[t['id']] >= min_team_size * y[t['id']],
                     f"SC1_min_{t['id']}"
                 )
                 prob += (
                     lpSum(x[p['id']][t['id']] for p in eligible) - s_size_over[t['id']] <= actual_max * y[t['id']],
                     f"SC1_max_{t['id']}"
+                )
+                # Hard floor: if team forms, must have at least actual_min participants
+                prob += (
+                    lpSum(x[p['id']][t['id']] for p in eligible) >= actual_min * y[t['id']],
+                    f"HC_floor_{t['id']}"
                 )
 
         # SC2: At least 2 women per team
@@ -1309,13 +1400,20 @@ class DTeamSolverV3:
                             f['facilitator_role'] = 'Secondary'
                             fellow_assignment_map.setdefault(f['id'], []).append({'team_id': t['id'], 'role': 'Secondary'})
 
+                    # Include fellows in composition analysis since they are on the team
+                    all_team_members = list(members)
+                    if primary:
+                        all_team_members.append(primary)
+                    if secondary:
+                        all_team_members.append(secondary)
+
                     solution['teams'][t['id']] = {
                         'info': t,
                         'members': members,
                         'size': len(members),
                         'primary_facilitator': primary,
                         'secondary_facilitator': secondary,
-                        'composition': self._analyze_composition(members),
+                        'composition': self._analyze_composition(all_team_members),
                     }
 
         # Build facilitator assignments list with full data
