@@ -20,6 +20,7 @@ import io
 import uuid
 import math
 import traceback
+import threading
 from datetime import datetime
 
 import pandas as pd
@@ -47,6 +48,54 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 # In-memory cache for solutions
 solutions_cache = {}
+
+# In-memory cache for background jobs
+jobs_cache = {}
+
+
+def run_solver_background(job_id, filepath, filename, min_team_size, max_team_size, allow_flexible, time_limit):
+    """Run the solver in a background thread and store results."""
+    try:
+        data_format = detect_data_format(filepath)
+        if data_format == 'v3':
+            solver = DTeamSolverV3(filepath, verbose=False)
+        else:
+            solver = DTeamSolverV2(filepath, verbose=False)
+
+        solution = solver.solve(
+            min_team_size=min_team_size,
+            max_team_size=max_team_size,
+            allow_flexible_size=allow_flexible,
+            time_limit_seconds=time_limit
+        )
+
+        solution_id = str(uuid.uuid4())
+        formatted = format_solution_for_frontend(solution)
+        formatted['solution_id'] = solution_id
+        formatted['filename'] = filename
+        formatted['timestamp'] = datetime.now().isoformat()
+
+        solutions_cache[solution_id] = {
+            'solution': solution,
+            'solver': solver,
+            'filepath': filepath
+        }
+
+        jobs_cache[job_id] = {
+            'status': 'completed',
+            'result': clean_for_json(formatted),
+            'error': None
+        }
+    except Exception as e:
+        traceback.print_exc()
+        error_msg = str(e)
+        if 'Infeasible' in error_msg or 'infeasible' in error_msg:
+            error_msg = "The solver could not find a feasible solution. Try adjusting team size parameters."
+        jobs_cache[job_id] = {
+            'status': 'failed',
+            'result': None,
+            'error': f'Error processing file: {error_msg}'
+        }
 
 
 # =============================================================================
@@ -139,8 +188,8 @@ def index():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     """
-    Handle file upload and run the solver.
-    Supports both CSV and Excel files.
+    Handle file upload and start the solver in a background thread.
+    Returns a job_id immediately; client polls /job/<job_id> for results.
     """
     try:
         if 'file' not in request.files:
@@ -165,46 +214,43 @@ def upload_file():
         allow_flexible = request.form.get('allow_flexible', 'true') == 'true'
         time_limit = int(request.form.get('time_limit', 300))
 
-        # Detect data format and use appropriate solver
-        data_format = detect_data_format(filepath)
-        print(f"Detected data format: {data_format}")
-
-        if data_format == 'v3':
-            solver = DTeamSolverV3(filepath, verbose=False)
-        else:
-            solver = DTeamSolverV2(filepath, verbose=False)
-
-        solution = solver.solve(
-            min_team_size=min_team_size,
-            max_team_size=max_team_size,
-            allow_flexible_size=allow_flexible,
-            time_limit_seconds=time_limit
-        )
-
-        # Generate solution ID and format for frontend
-        solution_id = str(uuid.uuid4())
-        formatted = format_solution_for_frontend(solution)
-        formatted['solution_id'] = solution_id
-        formatted['filename'] = filename
-        formatted['timestamp'] = datetime.now().isoformat()
-
-        # Cache for later download
-        solutions_cache[solution_id] = {
-            'solution': solution,
-            'solver': solver,
-            'filepath': filepath
+        # Create a background job
+        job_id = str(uuid.uuid4())
+        jobs_cache[job_id] = {
+            'status': 'running',
+            'result': None,
+            'error': None
         }
 
-        return jsonify(clean_for_json(formatted))
+        # Start solver in background thread
+        thread = threading.Thread(
+            target=run_solver_background,
+            args=(job_id, filepath, filename, min_team_size, max_team_size, allow_flexible, time_limit),
+            daemon=True
+        )
+        thread.start()
+
+        # Return immediately with job_id
+        return jsonify({'job_id': job_id, 'status': 'running'})
 
     except Exception as e:
         traceback.print_exc()
-        error_msg = str(e)
-        if 'Infeasible' in error_msg or 'infeasible' in error_msg:
-            error_msg = "The solver could not find a feasible solution with the given data and constraints. Try adjusting team size parameters."
-        elif 'timeout' in error_msg.lower() or 'time limit' in error_msg.lower():
-            error_msg = "The solver timed out. Try increasing the time limit or reducing the data size."
-        return jsonify({'error': f'Error processing file: {error_msg}'}), 500
+        return jsonify({'error': f'Error starting solver: {str(e)}'}), 500
+
+
+@app.route('/job/<job_id>')
+def check_job(job_id):
+    """Poll for job status. Returns status + result when done."""
+    if job_id not in jobs_cache:
+        return jsonify({'error': 'Job not found'}), 404
+
+    job = jobs_cache[job_id]
+    if job['status'] == 'running':
+        return jsonify({'status': 'running'})
+    elif job['status'] == 'completed':
+        return jsonify({'status': 'completed', 'result': job['result']})
+    else:
+        return jsonify({'status': 'failed', 'error': job['error']}), 500
 
 
 @app.route('/download/<solution_id>/<format_type>')

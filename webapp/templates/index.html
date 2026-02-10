@@ -770,8 +770,8 @@
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loading-overlay">
         <div class="loader"></div>
-        <p class="loading-overlay__text">Optimizing Teams</p>
-        <p class="loading-overlay__subtext">This may take a moment</p>
+        <p class="loading-overlay__text" id="loading-text">Optimizing Teams</p>
+        <p class="loading-overlay__subtext" id="loading-subtext">Uploading file...</p>
     </div>
     
     <!-- Modal -->
@@ -891,6 +891,10 @@
         
         async function runSolver() {
             if (!selectedFile) return;
+            const loadingText = $('#loading-text');
+            const loadingSubtext = $('#loading-subtext');
+            loadingText.textContent = 'Optimizing Teams';
+            loadingSubtext.textContent = 'Uploading file...';
             loadingOverlay.classList.add('visible');
             
             const formData = new FormData();
@@ -901,15 +905,60 @@
             formData.append('allow_flexible', $('#allow-flexible').checked);
             
             try {
-                const response = await fetch('/upload', { method: 'POST', body: formData });
-                const data = await response.json();
-                if (response.ok) {
-                    currentSolutionId = data.solution_id;
-                    fullResponseData = data;
-                    displayResults(data);
-                } else {
-                    alert(`Error: ${data.error}`);
+                // Step 1: Submit file — server returns a job_id immediately
+                const uploadResp = await fetch('/upload', { method: 'POST', body: formData });
+                
+                // Handle non-JSON responses (e.g., Render error pages)
+                const contentType = uploadResp.headers.get('content-type') || '';
+                if (!contentType.includes('application/json')) {
+                    throw new Error(`Server returned an unexpected response (HTTP ${uploadResp.status}). Please try again.`);
                 }
+                
+                const uploadData = await uploadResp.json();
+                if (!uploadResp.ok) {
+                    throw new Error(uploadData.error || 'Upload failed');
+                }
+                
+                if (!uploadData.job_id) {
+                    // Legacy direct response (shouldn't happen, but handle gracefully)
+                    currentSolutionId = uploadData.solution_id;
+                    fullResponseData = uploadData;
+                    displayResults(uploadData);
+                    return;
+                }
+                
+                // Step 2: Poll for results every 3 seconds
+                const jobId = uploadData.job_id;
+                const maxPolls = 200;  // Up to ~10 minutes
+                loadingSubtext.textContent = 'Solver is running... this may take a few minutes';
+                const startTime = Date.now();
+                for (let i = 0; i < maxPolls; i++) {
+                    await new Promise(r => setTimeout(r, 3000));
+                    const elapsed = Math.round((Date.now() - startTime) / 1000);
+                    loadingSubtext.textContent = `Solver running... ${elapsed}s elapsed`;
+                    
+                    const pollResp = await fetch(`/job/${jobId}`);
+                    const pollType = pollResp.headers.get('content-type') || '';
+                    if (!pollType.includes('application/json')) {
+                        // Render might return HTML on transient errors — retry
+                        console.warn('Non-JSON poll response, retrying...');
+                        continue;
+                    }
+                    
+                    const pollData = await pollResp.json();
+                    
+                    if (pollData.status === 'completed') {
+                        currentSolutionId = pollData.result.solution_id;
+                        fullResponseData = pollData.result;
+                        displayResults(pollData.result);
+                        return;
+                    } else if (pollData.status === 'failed') {
+                        throw new Error(pollData.error || 'Solver failed');
+                    }
+                    // else status === 'running', continue polling
+                }
+                throw new Error('Solver timed out. Please try again with a shorter time limit.');
+                
             } catch (error) {
                 alert(`Error: ${error.message}`);
             } finally {
